@@ -111,11 +111,12 @@ var xmlhttp;
 								ANSid = obj[1].data[0];
 								ANSpass = obj[1].data[1];
 								ANSresult = obj[1].data[2];
+				if (ANSpass == '1') { document.getElementById("formlogin").action = "member.html"+"#"+u; }
                         }
                         html+="</table>";
                         console.log(url+"?uid="+uid);
 						console.log(ANSid + ANSpass + ANSresult);
-                        document.getElementById("test").innerHTML=html;
+//                         document.getElementById("test").innerHTML=html;
                   }
 
           }
