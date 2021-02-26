@@ -115,7 +115,7 @@ var xmlhttp;
                         html+="</table>";
                         console.log(url+"?uid="+uid);
 						console.log(ANSid + ANSpass + ANSresult);
-                        // document.getElementById("test").innerHTML=html;
+                        document.getElementById("test").innerHTML=html;
                   }
 
           }
