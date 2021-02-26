@@ -111,7 +111,7 @@ var xmlhttp;
 								ANSid = obj[1].data[0];
 								ANSpass = obj[1].data[1];
 								ANSresult = obj[1].data[2];
-				if (ANSpass == '1') { document.getElementById("formlogin").action = "member.html"+"#"+ANSid; }
+// 				if (ANSpass == '1') { document.getElementById("formlogin").action = "member.html"+"#"+ANSid; }
                         }
                         html+="</table>";
                         console.log(url+"?uid="+uid+"&upass="+upass);
@@ -136,7 +136,7 @@ function login() {
 // 	let u = document.getElementById("myuser").value;
 // 	let p = document.getElementById("mypass").value;
 	
-// 	if (ANSpass == '1') { document.getElementById("formlogin").action = "member.html"+"#"+ANSid; }
+	if (ANSpass == '1') { document.getElementById("formlogin").action = "member.html"+"#"+ANSid; }
 	alert(ANSresult)
 }
 
