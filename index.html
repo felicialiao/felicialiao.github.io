@@ -29,7 +29,7 @@
 		<h2>Sign In</h2>
 		<h6 class="text1">登入查詢訂單狀態</h6>
 		
-		<input id="myuser" type="text" placeholder="會員帳號 / FB帳號" onchange="getLoginInfo(myuser.value)">
+		<input id="myuser" type="text" placeholder="會員帳號 / FB名稱 (ex:王小明)" onchange="getLoginInfo(myuser.value)">
 		<input id="mypass" type="password" placeholder="會員密碼 / 預設 Init1234" />
 		<input type="submit" value="Sign In" onclick="login()">
 		<table class="TextButton">
@@ -43,28 +43,6 @@
 	<div id="new2" class="bodyHide">
 	<div class="textBody">
 	<h3> 訂單查詢 </h3>
-	<p style="text-align: left; margin:0 10px;"> 篩選條件 </p>
-	<table class="filter">
-		<tr>
-			<th>日期 - 起</th>
-			<th>日期 - 迄</th>
-			<th>商品</th>
-			<th>到貨</th>
-			<th>出貨</th>
-			<th>付款</th>
-		</tr>
-		
-		<tr>
-			<td> <input type="date" id="startdateId" required> </td>
-			<td> <input type="date" id="enddateId" required> </td>
-			<td> 
-				<select name="sku" id="sku"> <option value="">選擇商品</option>  </select> 
-			</td>
-			<td>
-				<select name="in" id="in"> <option value="">到貨</option>  </select> 
-			</td>
-		</tr>
-	</table>
 	<br><hr><br>
 	</div>
 	</div>
