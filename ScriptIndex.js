@@ -136,7 +136,7 @@ function login() {
 // 	let u = document.getElementById("myuser").value;
 // 	let p = document.getElementById("mypass").value;
 	
-// 	if (ANSpass == '1') { document.getElementById("formlogin").action = "member.html"+"#"+u; }
+// 	if (ANSpass == '1') { document.getElementById("formlogin").action = "member.html"+"#"+ANSid; }
 	alert(ANSresult)
 }
 
