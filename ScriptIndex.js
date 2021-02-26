@@ -133,9 +133,11 @@ var xmlhttp;
 
 
 function login() {
-// 	let u = document.getElementById("myuser").value;
-// 	let p = document.getElementById("mypass").value;
+ 	let u = document.getElementById("myuser").value;
+ 	let p = document.getElementById("mypass").value;
 	
+        getLoginInfo(u,p);
+
 	if (ANSpass == '1') { document.getElementById("formlogin").action = "member.html"+"#"+ANSid; }
 	alert(ANSresult)
 }
