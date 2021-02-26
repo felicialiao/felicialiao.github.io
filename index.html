@@ -29,9 +29,9 @@
 		<h2>Sign In</h2>
 		<h6 class="text1">登入查詢訂單狀態</h6>
 		
-		<input id="myuser" type="text" placeholder="會員帳號 / FB名稱 (ex:王小明)" >
-		<input id="mypass" type="password" placeholder="會員密碼 / 預設 Init1234" />
-		<input type="submit" value="Sign In" onclick="getLoginInfo(myuser.value, mypass.value)">
+		<input id="myuser" type="text" placeholder="會員帳號 / FB名稱 (ex:王小明)" onchange="getLoginInfo(myuser.value, mypass.value)">
+		<input id="mypass" type="password" placeholder="會員密碼 / 預設 Init1234" onchange="getLoginInfo(myuser.value, mypass.value)">
+		<input type="submit" value="Sign In" onclick="login()">
 		<table class="TextButton">
 		<td><input type="button" value="忘記密碼" onclick="getLoginInfo(myuser.value, mypass.value)"></td>
 		<td><input type="button" value="加入會員" onclick="login()"></td>
