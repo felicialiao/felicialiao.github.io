@@ -17,6 +17,7 @@ function myChangePage() {
 /* 帳號密碼資料 */
 let ANSid = '';
 let ANSpass = '';
+let ANSresult = '';
 let name = "UName";
 /* 帳號密碼資料 */
 
@@ -78,7 +79,7 @@ var dateReviver = function (key, value) {
     return value;
 };
 
-function getLoginInfo(uid)
+function getLoginInfo(uid,upass)
 {
 var xmlhttp;
 
@@ -109,10 +110,11 @@ var xmlhttp;
                                 html  += '</tr>';     
 								ANSid = obj[1].data[0];
 								ANSpass = obj[1].data[1];
+								ANSresult = obj[1].data[2];
                         }
                         html+="</table>";
                         console.log(url+"?uid="+uid);
-						console.log(ANSid + ANSpass);
+						console.log(ANSid + ANSpass + ANSresult);
                         // document.getElementById("test").innerHTML=html;
                   }
 
@@ -133,14 +135,8 @@ function login() {
 	let u = document.getElementById("myuser").value;
 	let p = document.getElementById("mypass").value;
 	
-	if (u == ANSid) {
-		if( p == ANSpass) {
-		alert(u + " login sucess");
-		document.getElementById("formlogin").action = "member.html"+"#"+u;
-		}
-		else {alert(u + " password is error");}
-	}
-	else {alert(u + " user name is not exit");}
+	if (ANSpass == 1) { document.getElementById("formlogin").action = "member.html"+"#"+u; }
+	alert(ANSresult)
 }
 
 function logout(a) {
