@@ -120,7 +120,7 @@ var xmlhttp;
 
           }
     var url="https://script.google.com/macros/s/AKfycbxvXpslDtXzmY4F8GRYAF7-QYCHfSXrbBiY1h7ECeeBJ-U7azA/exec";
-        xmlhttp.open("get",url+"?uid="+uid,true);
+        xmlhttp.open("get",url+"?uid="+uid+"&upass="+upass,true);
         xmlhttp.send();
 		
 }
