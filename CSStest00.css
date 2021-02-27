@@ -210,6 +210,11 @@ input[type="button"].TextButton {
 	margin: 15 60px !important;
 }
 
+input[type="button"].Npass {
+	width:120px;
+	margin: 15 5 15 50 !important;
+}
+
 
 h1, h2, h3, h4, h5, h6 { text-align: center; }
 h2 { margin-bottom: 5px; }

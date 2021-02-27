@@ -238,5 +238,8 @@ var xmlhttp;
 		} else {alert("密碼輸入錯誤\n請重新輸入")}
 		
 }
-
+function ChangeClose() {
+document.getElementById("button_Npass").setAttribute("style","");
+document.getElementById("Npass").setAttribute("class","bodyHide");
+}
 /* --- 更改員密碼 --- (e) */
