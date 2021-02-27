@@ -33,8 +33,8 @@
 		<input id="mypass" type="password" placeholder="會員密碼 / 預設 Init1234">
 		<input type="button" value="Sign In" onclick="getLoginInfo(myuser.value, mypass.value)">
 		<table class="TableTextButton">
-		<td><input type="button" class="TextButton" value="忘記密碼"></td>
-		<td><input type="button" class="TextButton" value="加入會員"></td>
+		<td><input type="button" class="TextButton" value="忘記密碼" onclick="alert('首次登入，預設密碼為\n Init1234 \n')"></td>
+		<td><input type="button" class="TextButton" value="加入會員" onclick="alert('帳號請輸入 FB臉書名稱，如: 王小明。\n若近一年內有購物紀錄，即可登入。')"></td>
 		</table>
 	</form>
 	<span id="test"></span>
