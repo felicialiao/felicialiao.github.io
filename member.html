@@ -30,7 +30,7 @@
     </div>
 </nav>
 	<div id="login" class="bodyShow">
-	<div class="textBody">
+	<div class="textBody" style="width:400px">
 		
 		<h2>會員資料</h2>
 		<h6 class="text1">會員詳細資料</h6>
@@ -48,8 +48,21 @@
 				<th> 預設出貨方式 </th>
 				<td> 7-11賣便貨 </td>
 			</tr>
-			
+			<tr><td></td></tr>
+			<tr>
+				<td> <input type="button" id="button_Info" value="更新資訊" style="margin:auto;"> </td>
+				<td> <input type="button" id="button_Npass" value="更改密碼" onclick="Npass()"> </td>
+			</tr>
 		</table>
+		
+		
+		<span id="Npass" class="bodyHide">
+		<hr>
+		<h3>更改密碼</h3>
+		<input type="password" class="Npass" id="newpass0" placeholder="請輸入新密碼">
+		<input type="password" class="Npass" id="newpass" placeholder="請再次輸入新密碼">
+		<input type="button" class="Npass" value="Confirm" onclick="getChangePass(uname, newpass.value)">
+		</span>
 		
 	</div>
 	</div>
@@ -135,13 +148,14 @@
   </div>
 	</div>
 
+
 	<div id="bodyadmin" class="bodyHide">
 	管理員
 	
-<input type="text" id="uid" />
-<input type="button" name="inq" value="查詢" onclick="showHint(uid.value);"></br>
+		<input type="text" id="uid" />
+		<input type="button" name="inq" value="查詢" onclick="showHint(uid.value);"></br>
 
-<span id="order_status"></span>
+		<span id="order_status"></span>
 
 		<table>
 		</table>

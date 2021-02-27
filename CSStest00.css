@@ -29,6 +29,7 @@ body {
 	border-radius: 10px;
 	line-height: 35px;
 	margin-bottom:50px;
+	padding-bottom:30px;
 }
 
 .login {
@@ -42,28 +43,35 @@ body {
 }
 
 
-.login input {
-	margin: 15px auto;
+input {
+	display: block;
 	text-align: center;
-	padding: 12px;
 	border-style:solid;
 	border-radius: 10px;
 	border-color: #b8926a;	
 	line-height:20px;
+	padding: 10px 40px;
 	font-size: 15px;
 	outline: none;
-	width: 70%;
 	cursor: pointer;
+}
+
+input[type="text"],
+.login input {
+	margin: 15px auto;
+	padding: 12px;
+	outline: none;
+	width: 70%;
 }
 
 
 input[type="button"] {
     color: #6f6a66;
-    font-size: 15px;
+    font-size: 16px;
     text-align: center;
     text-decoration: none;
     vertical-align: middle;
-    padding: 0.5rem  0.5rem;
+    padding: 10px  10px;
     border: 0px solid !important;
     white-space: nowrap;
     border-radius: 6px;
@@ -72,7 +80,7 @@ input[type="button"] {
 	margin:30px auto;
 }
 
-
+.member input[type="button"]:visited,
 input[type="submit"]:focus, input[type="submit"]:hover,
 input[type="button"]:focus, input[type="button"]:hover {
 	background: #e0c3ac !important;
@@ -141,11 +149,11 @@ input[type="button"].TextButton {
 	display:none;
 }
 
-.filter input, .filter select {
+.textBody input, .textBody select {
 	margin: 0px 5px;
 	padding: 5px 5px 5px 10px;
 	border: 2px solid #b8926a;
-	border-radius: 10px;
+	border-radius: 10px;s
 	font-size: 15px;
 	outline: none;
 	cursor: pointer;
@@ -158,10 +166,10 @@ input[type="button"].TextButton {
 .member {
 	width: 100%;
 	align-items: center;
-	padding-bottom:30px;
+	font-size: 16px;
 }
 
-.member td{
+.member td {
 	padding : 10px;
 	width:50%;
 	text-align: left;
@@ -173,7 +181,7 @@ input[type="button"].TextButton {
 	text-align: right;
 }
 
-.filter input[type="button"] {
+.textBody input[type="button"] {
 	padding: 5px 20px;
 	font-weight: bold;
 	font-size: 18px;
@@ -198,6 +206,10 @@ input[type="button"].TextButton {
   border-bottom: 3px solid #b8926a !important;
 }
 
+.Npass {
+	width: 280px;
+	margin: 15 60px !important;
+}
 
 
 h1, h2, h3, h4, h5, h6 { text-align: center; }

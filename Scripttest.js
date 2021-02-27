@@ -1,23 +1,17 @@
 function myChangePage() {
+	document.getElementById("login").setAttribute("class","bodyHide");
+    document.getElementById("new2").setAttribute("class","bodyHide");
+    document.getElementById("new3").setAttribute("class","bodyHide");
+	document.getElementById("bodyadmin").setAttribute("class","bodyHide");
+	
+	
   if (document.getElementById("seg0").checked) {
     document.getElementById("login").setAttribute("class","");
-	document.getElementById("new2").setAttribute("class","bodyHide");
-    document.getElementById("new3").setAttribute("class","bodyHide");
-	document.getElementById("bodyadmin").setAttribute("class","bodyHide");
   } else if (document.getElementById("seg1").checked) {
-	document.getElementById("login").setAttribute("class","bodyHide");
     document.getElementById("new2").setAttribute("class","");
-    document.getElementById("new3").setAttribute("class","bodyHide");
-	document.getElementById("bodyadmin").setAttribute("class","bodyHide");
   } else if (document.getElementById("seg2").checked) {
-	document.getElementById("login").setAttribute("class","bodyHide");
-    document.getElementById("new2").setAttribute("class","bodyHide");
     document.getElementById("new3").setAttribute("class","");
-	document.getElementById("bodyadmin").setAttribute("class","bodyHide");
   } else if (document.getElementById("seqadmin").checked) {
-	document.getElementById("login").setAttribute("class","bodyHide");
-    document.getElementById("new2").setAttribute("class","bodyHide");
-    document.getElementById("new3").setAttribute("class","bodyHide");
 	document.getElementById("bodyadmin").setAttribute("class","");
   } else if (document.getElementById("logout").checked) {
 	document.getElementById("logout").action = "index.html";
@@ -39,33 +33,33 @@ document.getElementById("enddateId").value = new Date().toISOString().slice(0,10
 
 
 /* 帳號密碼資料 */
-let username = ["admin","我","鄭宇茵"]
-let mypassword = ["admin","Init1234","Init1234"]
-let name = "UName";
+// let username = ["admin","我","鄭宇茵"]
+// let mypassword = ["admin","Init1234","Init1234"]
+// let name = "UName";
 /* 帳號密碼資料 */
 
 
 
-function login() {
-	let u = document.getElementById("myuser").value;
-	let p = document.getElementById("mypass").value;
-	let i = username.indexOf(u);
+// function login() {
+	// let u = document.getElementById("myuser").value;
+	// let p = document.getElementById("mypass").value;
+	// let i = username.indexOf(u);
 	
-	if ( i != -1) {
-		if( p == mypassword[i]) {
-		alert(u + " login sucess");
-		document.getElementById("formlogin").action = "member.html"+"#"+u;
-		}
-		else {alert(u + " password error");}
-	}
-	else {alert(u + " user name not exit");}
-}
+	// if ( i != -1) {
+		// if( p == mypassword[i]) {
+		// alert(u + " login sucess");
+		// document.getElementById("formlogin").action = "member.html"+"#"+u;
+		// }
+		// else {alert(u + " password error");}
+	// }
+	// else {alert(u + " user name not exit");}
+// }
 
-function logout(a) {
-	if (confirm("是否要登出?") == true)
-	{a.href="index.html";}
-	else {}
-}
+// function logout(a) {
+	// if (confirm("是否要登出?") == true)
+	// {a.href="index.html";}
+	// else {}
+// }
 
 /* 抓取會員名稱" */
 let url = '"'+window.location;
@@ -73,7 +67,7 @@ let uname = "";
 	uname = decodeURI(url.split("#")[1]);
 document.getElementById("uname").innerHTML =  uname;
 
-if (uname == "admin" || uname == "我") {document.getElementById("labadmin").setAttribute("class","");}
+if (uname == "admin") {document.getElementById("labadmin").setAttribute("class","");}
 skuDropDown(startdateId.value,enddateId.value);
 /* 抓取會員名稱" */
 
@@ -200,3 +194,49 @@ var xmlhttp;
         xmlhttp.send();
 }
 /* --- 商品下拉選單 --- (e) */
+
+/* --- 更改會員密碼 --- (e) */
+function Npass() {
+	document.getElementById("button_Npass").setAttribute("style",'background: #e0c3ac !important; border-color: #e0c3ac; color: #ffffff;')
+	document.getElementById("Npass").setAttribute("class","");
+}
+
+function getChangePass(uid,unewpass)
+{
+var xmlhttp;
+
+        if (window.XMLHttpRequest)
+          {// code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp=new XMLHttpRequest();
+          }
+        else
+          {// code for IE6, IE5
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+			xmlhttp.onreadystatechange=function()
+          {
+                  if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+                  {
+                    
+					alert("Change Password Sucess") 
+					console.log(url+"?uid="+uid+"&newpass="+unewpass)
+				 	  			  
+				  }
+
+          }
+    var url="https://script.google.com/macros/s/AKfycbw0wdAM8q03i2IRkYqMqCFQfzMXR4OUjdw_zKjZ8_dEKJM1joDP/exec";
+        xmlhttp.open("get",url+"?uid="+uid+"&newpass="+unewpass,true);
+		
+		if(document.getElementById("newpass0").value != '' && document.getElementById("newpass0").value == document.getElementById("newpass").value) {
+			let bar = confirm('Please confirm again');
+			console.log(bar);
+			if(bar) {
+				document.getElementById("button_Npass").setAttribute("style","")
+				document.getElementById("Npass").setAttribute("class","bodyHide");
+				xmlhttp.send();
+			}
+		} else {alert("密碼輸入錯誤\n請重新輸入")}
+		
+}
+
+/* --- 更改員密碼 --- (e) */

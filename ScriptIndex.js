@@ -148,32 +148,30 @@ var xmlhttp;
 
 
 
-function login(a) {
- 	let u = document.getElementById("myuser").value;
- 	let p = document.getElementById("mypass").value;
-	console.log('before')
-    getLoginInfo(u,p);
+// function login(a) {
+ 	// let u = document.getElementById("myuser").value;
+ 	// let p = document.getElementById("mypass").value;
+	// console.log('before')
+    // getLoginInfo(u,p);
 	
-	console.log(ANSpass)
+	// console.log(ANSpass)
 	
-	while (ANSpass != '')	
-	{
-	console.log(ANSpass)
-	alert(ANSresult)
-	if (ANSpass == '1') 
-	{ 	
-		console.log("member.html#"+ANSid)
-		a.href ="member.html#"+ANSid; 
-	}
-	break;
-	}
+	// while (ANSpass != '')	
+	// {
+	// console.log(ANSpass)
+	// alert(ANSresult)
+	// if (ANSpass == '1') 
+	// { 	
+		// console.log("member.html#"+ANSid)
+		// a.href ="member.html#"+ANSid; 
+	// }
+	// break;
+	// }
 	
-}
+// }
 
-function logout(a) {
-	if (confirm("是否要登出?") == true)
-	{a.href="index.html";}
-	else {}
-}
-
-
+// function logout(a) {
+	// if (confirm("是否要登出?") == true)
+	// {a.href="index.html";}
+	// else {}
+// }
