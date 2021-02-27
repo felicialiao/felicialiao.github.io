@@ -23,16 +23,16 @@ let name = "UName";
 
 
 /* 抓預設日期 */
-let x = new Date();
-let y = new Date();
+// let x = new Date();
+// let y = new Date();
 
-function DateSelect() {
-		y = x.setMonth(x.getMonth()-1);
-	return y;
-}
-DateSelect();
-document.getElementById("startdateId").value = new Date(y).toISOString().slice(0,10);
-document.getElementById("enddateId").value = new Date().toISOString().slice(0,10);
+// function DateSelect() {
+		// y = x.setMonth(x.getMonth()-1);
+	// return y;
+// }
+// DateSelect();
+// document.getElementById("startdateId").value = new Date(y).toISOString().slice(0,10);
+// document.getElementById("enddateId").value = new Date().toISOString().slice(0,10);
 /* 抓預設日期 */
 
 
@@ -117,7 +117,23 @@ var xmlhttp;
                         console.log(url+"?uid="+uid+"&upass="+upass);
 						console.log(ANSid + ANSpass + ANSresult);
 //                         document.getElementById("test").innerHTML=html;
-                  }
+                  
+				  while (ANSpass != '')	
+					{
+					console.log(ANSpass)
+					alert(ANSresult)
+					if (ANSpass == '1') 
+					{ 	
+						console.log("member.html#"+ANSid)
+						window.location.href = "member.html#"+ANSid;
+					}
+					break;
+					}
+				  
+				  
+				  
+				  
+				  }
 
           }
     var url="https://script.google.com/macros/s/AKfycbxvXpslDtXzmY4F8GRYAF7-QYCHfSXrbBiY1h7ECeeBJ-U7azA/exec";
@@ -132,14 +148,26 @@ var xmlhttp;
 
 
 
-function login() {
+function login(a) {
  	let u = document.getElementById("myuser").value;
  	let p = document.getElementById("mypass").value;
+	console.log('before')
+    getLoginInfo(u,p);
 	
-        getLoginInfo(u,p);
-
-	if (ANSpass == '1') { document.getElementById("formlogin").action = "member.html"+"#"+ANSid; }
+	console.log(ANSpass)
+	
+	while (ANSpass != '')	
+	{
+	console.log(ANSpass)
 	alert(ANSresult)
+	if (ANSpass == '1') 
+	{ 	
+		console.log("member.html#"+ANSid)
+		a.href ="member.html#"+ANSid; 
+	}
+	break;
+	}
+	
 }
 
 function logout(a) {
