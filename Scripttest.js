@@ -181,7 +181,11 @@ var xmlhttp;
 						var s= document.getElementById("sku");
 										
                         let skulist = '<select name="sku" id="sku"> <option value="all">全部商品</option> ' ;//table html 語法開始
-                        
+						
+						s.innerText = null;
+						
+						s.options[0] = new Option("全部商品", "all");
+						
                         for (var i = 1; i < obj.length; i ++ ) {
 												
 						s.options[s.options.length]= new Option(obj[i].data[2],obj[i].data[2]);
