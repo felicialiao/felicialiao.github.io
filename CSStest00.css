@@ -80,7 +80,6 @@ input[type="button"] {
 	margin:30px auto;
 }
 
-.member input[type="button"]:visited,
 input[type="submit"]:focus, input[type="submit"]:hover,
 input[type="button"]:focus, input[type="button"]:hover {
 	background: #e0c3ac !important;
@@ -153,7 +152,7 @@ input[type="button"].TextButton {
 	margin: 0px 5px;
 	padding: 5px 5px 5px 10px;
 	border: 2px solid #b8926a;
-	border-radius: 10px;s
+	border-radius: 10px;
 	font-size: 15px;
 	outline: none;
 	cursor: pointer;
