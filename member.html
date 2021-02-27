@@ -61,7 +61,10 @@
 		<h3>更改密碼</h3>
 		<input type="password" class="Npass" id="newpass0" placeholder="請輸入新密碼">
 		<input type="password" class="Npass" id="newpass" placeholder="請再次輸入新密碼">
-		<input type="button" class="Npass" value="Confirm" onclick="getChangePass(uname, newpass.value)">
+		<table class="TableTextButton">
+		<td> <input type="button" class="Npass" value="Confirm" onclick="getChangePass(uname, newpass.value)"> </td>
+		<td> <input type="button" class="Npass" value="Cancel" onclick="ChangeClose()"> </td> 
+		</table>
 		</span>
 		
 	</div>
