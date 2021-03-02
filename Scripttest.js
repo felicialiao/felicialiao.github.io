@@ -55,11 +55,11 @@ document.getElementById("enddateId").value = new Date().toISOString().slice(0,10
 	// else {alert(u + " user name not exit");}
 // }
 
-// function logout(a) {
-	// if (confirm("是否要登出?") == true)
-	// {a.href="index.html";}
-	// else {}
-// }
+function logout(a) {
+	if (confirm("是否要登出?") == true)
+	{a.href="index.html";}
+	else {}
+}
 
 /* 抓取會員名稱" */
 let url = '"'+window.location;
