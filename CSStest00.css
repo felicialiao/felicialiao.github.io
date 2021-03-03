@@ -194,9 +194,10 @@ input[type="button"].TextButton {
 
 .OrderList {
 	width:100%;
-    color:#3e3736;
+    	color:#3e3736;
 	margin-bottom: 50px;
 	border-radius: 10px;
+	border-collapse:collapse;
 }
 
 .OrderList th, .OrderList td {
