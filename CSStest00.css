@@ -222,6 +222,13 @@ input[type="button"].Npass {
 	margin: 15 5 15 50 !important;
 }
 
+input[type="checkbox"] {
+	height: auto;
+}
+
+.OrderList.hide1 tr > *:nth-child(2) {
+    display: none;
+}
 
 h1, h2, h3, h4, h5, h6 { text-align: center; }
 h2 { margin-bottom: 5px; }
