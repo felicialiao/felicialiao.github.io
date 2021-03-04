@@ -17,6 +17,7 @@ function myChangePage() {
 	document.getElementById("logout").action = "index.html";
   }
 }
+myChangePage();
 
 /* 抓預設日期 */
 let x = new Date();
@@ -69,6 +70,7 @@ document.getElementById("uname").innerHTML =  uname;
 
 if (uname == "admin") {document.getElementById("labadmin").setAttribute("class","");}
 skuDropDown(startdateId.value,enddateId.value);
+showHint(startdateId.value,enddateId.value,sku.value,arr.value);
 /* 抓取會員名稱" */
 
 
@@ -124,14 +126,19 @@ var xmlhttp;
                         var result=xmlhttp.responseText;
                         var obj = JSON.parse(result,dateReviver);//解析json字串為json物件形式
                                                 
-                        var html = '<table class="OrderList">';//table html 語法開始
+                        var html = '<table id="OrderList" class="OrderList hide1">';//table html 語法開始
                         
                         for (var i = 0; i < obj.length; i ++ ) {//
                                 html  += '<tr>';//
                                 for(j=0;j<obj[i].data.length;j++)
                                 {
-								  if(i==0) {html+= '<th>'+obj[i].data[j]+'</th>'; }
-                                  else {html+= '<td>'+obj[i].data[j]+'</td>'; }
+								  if(i==0) { html+= '<th>'+obj[i].data[j]+'</th>';}
+                                  else { if (j==1) {
+													  if (obj[i].data[j] == "") {html+= '<td></td>';}
+													  else {html+= '<td> <input type="checkbox" name="123" value="'+obj[i].data[j]+'"></td>';}
+												   }
+										 else {html+= '<td>'+obj[i].data[j]+'</td>';}
+									   }
                                 }
                                 html  += '</tr>';            
                         }
@@ -182,7 +189,7 @@ var xmlhttp;
 						
                         for (var i = 1; i < obj.length; i ++ ) {
 												
-						s.options[s.options.length]= new Option(obj[i].data[2],obj[i].data[2]);
+						s.options[s.options.length]= new Option(obj[i].data[3],obj[i].data[3]);
 
                         }
           
@@ -243,3 +250,19 @@ document.getElementById("button_Npass").setAttribute("style","");
 document.getElementById("Npass").setAttribute("class","bodyHide");
 }
 /* --- 更改員密碼 --- (e) */
+
+
+/* --- 出貨申請 --- (s) */
+function applyout() {
+	let check_status = document.getElementById("OrderList").classList;
+	console.log(check_status);
+	
+	if( check_status.length == 2) {document.getElementById("OrderList").classList.toggle("hide1");}
+	else {	
+			if (confirm("是否要申請出貨?") == true) {document.getElementById("OrderList").classList.toggle("hide1");}
+			else {}
+		 }
+	
+}
+
+/* --- 出貨申請 --- (e) */
