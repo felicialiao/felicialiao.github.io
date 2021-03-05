@@ -380,7 +380,7 @@ function read_out() {
                         
                         console.log(html);
                         document.getElementById("read_out_list").innerHTML=html;
-                        if(obj.length==1) //只有一筆代表查不到資料
+                        if(obj.length==0) //只有一筆代表查不到資料
                         document.getElementById("read_out_list").innerHTML="查無資料";
                   }
 
