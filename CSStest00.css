@@ -2,17 +2,27 @@ html {
 	height:100%;
 	width:100%;
 	margin:0;
-}
-body {
-	background: #ffffff;
 	font-family:  Microsoft JhengHei ;
+}
+body #content {
+	background: #ffffff;
 	align-items: center;
-	/* justify-content: center; */
 	display:flex;
 	flex-direction:column;
 }
 
-input {
+dialog {
+	background: #efede3;
+	color: #3e3736;
+	padding: 5px 40px;
+	box-shadow: 10px 10px 25px #cab8b980;
+	border-radius: 10px;
+	margin-bottom:50px;
+	padding-bottom:30px;
+	margin : 5% 30%;
+}
+
+input:not([type="checkbox"]) {
     -webkit-appearance: none;  /* Safari 和 Chrome，常用於iOS下移除內建樣式 */
     -moz-appearance: none;     /* FireFox */
     appearance: none;
@@ -21,14 +31,11 @@ input {
 .title {
 	width: 100%;
 	text-align:center;
-/* 	font-family:Graublau Sans Web; */
 	font-size: 50px;
 }
 
 .textBody {
 	background: #efede3;
-	min-width: 400px;
-	width: auto;
 	color: #3e3736;
 	padding: 5px 40px;
 	box-shadow: 10px 10px 25px #cab8b980;
@@ -114,10 +121,12 @@ input[type="button"].TextButton {
 	margin-top:0;
 }
 
+
 .nav {
-	align-items: center;
-	justify-content: center;
-	margin: 20px 100px;
+	width: 100%;
+	margin-bottom: 20px;
+	display:flex;
+    justify-content: center;
 }
 
 .nav .SegmentText {
@@ -127,7 +136,7 @@ input[type="button"].TextButton {
 	line-height: 34px;
 	padding: 5px;
 	background-color:#efede7;
-	margin: auto;
+	margin: 3px;
 }
 
 .nav .Seqment {
@@ -154,8 +163,9 @@ input[type="button"].TextButton {
 	display:none;
 }
 
+dialog input, dialog select,
 .textBody input, .textBody select {
-	margin: 0px 5px;
+	margin: auto 5px;
 	padding: 5px 5px 5px 10px;
 	border: 2px solid #b8926a;
 	border-radius: 10px;
@@ -166,6 +176,14 @@ input[type="button"].TextButton {
 	text-align:center;
 	color:#6b5152;
 	background:#fbfbf9;
+}
+
+dialog input[type="button"],
+.textBody input[type="button"] {
+	display: inline-grid;
+	padding: 5px 20px;
+	font-weight: bold;
+	font-size: 18px;
 }
 
 .member {
@@ -186,18 +204,12 @@ input[type="button"].TextButton {
 	text-align: right;
 }
 
-.textBody input[type="button"] {
-	padding: 5px 20px;
-	font-weight: bold;
-	font-size: 18px;
-}
 
 .OrderList {
 	width:100%;
-    	color:#3e3736;
+    color:#3e3736;
 	margin-bottom: 50px;
 	border-radius: 10px;
-	border-collapse:collapse;
 }
 
 .OrderList th, .OrderList td {
@@ -230,6 +242,62 @@ input[type="checkbox"] {
     display: none;
 }
 
+.OrderList tr > #name:nth-child(3) {
+    border-left: 1px solid #cab8b9;
+	border-right: 1px solid #cab8b9;
+}
+
+.outtable {
+	width:60%;
+    color:#3e3736;
+	margin: 20px;
+	border: 2px solid #455e8b !important;
+	background : #fbfbf9;
+	min-width: 300px;
+}
+
+
+.outtable th, .outtable td {
+  border-bottom: 1px solid #cab8b9;
+  padding: 5px;
+  text-align: center;
+  white-space:nowrap;
+}
+
+.outtable th {
+  text-align: center;
+  border-bottom: 3px solid #455e8b !important;
+  background: #bdd6ee;
+  font-weight: 900;
+}
+
+.outtable tfoot {
+	border-top: 2px solid #455e8b !important;
+	background: #d9e2f3;
+	font-weight: 900; 
+}
+
+.outtable tr > #tdname:nth-child(1) {
+    border-left: 1px solid #cab8b9;
+	border-right: 1px solid #cab8b9;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-rows: auto auto;
+}
+
+#total p, .p {
+	margin-left: 20px;
+	font-size:18px;
+	font-weight: 900;
+}
+
+#read_out_list hr {
+	border:none;
+	border-top : 1px #b8926a dashed;
+}
+
 h1, h2, h3, h4, h5, h6 { text-align: center; }
 h2 { margin-bottom: 5px; }
 h6 { color : gray; margin-top: 5px; }
@@ -237,3 +305,7 @@ h6 { color : gray; margin-top: 5px; }
 a {text-decoration:none;}
 
 div[id="new3"] h4 {text-align: left;}
+
+table {
+	border-collapse:collapse
+}

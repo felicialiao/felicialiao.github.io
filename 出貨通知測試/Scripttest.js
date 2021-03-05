@@ -68,7 +68,7 @@ let uname = "";
 	uname = decodeURI(url.split("#")[1]);
 document.getElementById("uname").innerHTML =  uname;
 
-if (uname == "admin") {document.getElementById("labadmin").setAttribute("class","");}
+if (uname == "admin" || uname == "我" ) {document.getElementById("labadmin").setAttribute("class","");}
 skuDropDown(startdateId.value,enddateId.value);
 showHint(startdateId.value,enddateId.value,sku.value,arr.value);
 /* 抓取會員名稱" */
@@ -337,7 +337,7 @@ function deli_money() {
 	console.log(total + temp);
 	if (total < 1500) { total0 = total + parseInt(temp); }
 	
-	let html = '<p> 結帳總金額 : $';
+	let html = '<p class="p"> 結帳總金額 : $';
 	html += total0;
 	console.log(html);
 	document.getElementById('total').innerHTML = html;
@@ -348,17 +348,60 @@ function sent() {
 	let url = 'https://script.google.com/macros/s/AKfycbzFgwIbzSKUXlAjZsP7KKI-5HVvQ3Wxs31kEVnLRQCkJ71bntY/exec?html=';
 	let body = '<h3> 出貨申請 </h3>'
 	body += document.getElementById('span_out').innerHTML;
-	body += '<p> 運費: '+ document.getElementById("deliver").value + '</p><br>';
+	body += '<p class="p"> 運費: '+ document.getElementById("deliver").value + '</p>';
 	body += document.getElementById('total').innerHTML;
 
-	
 	url += body;
 	
-	console.log(url);
+	var oReq = new XMLHttpRequest();
+	oReq.open('get',url,true);
+	oReq.send();
 	
-var oReq = new XMLHttpRequest();
-oReq.open('get',url,true);
-oReq.send();
+	dialog_out.close();
+	document.getElementById("all").classList.toggle("bodyHide")
 
 }
 /* --- 出貨申請 --- (e) */
+
+
+/* --- 讀取出貨申請 --- (s) */
+function read_out() {
+	document.getElementById("read_out_list").classList.toggle("bodyHide")
+	var xmlhttp;
+
+        if (window.XMLHttpRequest)
+          {// code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp=new XMLHttpRequest();
+          }
+        else
+          {// code for IE6, IE5
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+        xmlhttp.onreadystatechange=function()
+          {
+                  if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+                  {
+                        var result = xmlhttp.responseText;
+                        var obj = JSON.parse(result,dateReviver);//解析json字串為json物件形式
+                                                
+                        var html = '';//table html 語法開始
+                        
+                        for (var i = 0; i < obj.length; i ++ ) { //row
+                            html += '<hr>';    
+                            html += obj[i].data[0];
+							html += '<p class="p"> 更新時間 : ' + obj[i].data[1] + '</p>';            
+                        }
+                        
+                        console.log(html);
+                        document.getElementById("read_out_list").innerHTML=html;
+                        if(obj.length==1) //只有一筆代表查不到資料
+                        document.getElementById("read_out_list").innerHTML="查無資料";
+                  }
+
+          }
+    var url="https://script.google.com/macros/s/AKfycbzzefWfLLyYFccNw0IBqKN6jX82JYXBxLKJR0X2hu7YKN9Oxxk/exec";
+        xmlhttp.open("get",url,true);
+        xmlhttp.send();
+}
+
+/* --- 讀取出貨申請 --- (e) */

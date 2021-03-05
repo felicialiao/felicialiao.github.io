@@ -68,7 +68,7 @@ let uname = "";
 	uname = decodeURI(url.split("#")[1]);
 document.getElementById("uname").innerHTML =  uname;
 
-if (uname == "admin") {document.getElementById("labadmin").setAttribute("class","");}
+if (uname == "admin" || uname == "我" ) {document.getElementById("labadmin").setAttribute("class","");}
 skuDropDown(startdateId.value,enddateId.value);
 showHint(startdateId.value,enddateId.value,sku.value,arr.value);
 /* 抓取會員名稱" */
@@ -132,11 +132,14 @@ var xmlhttp;
                                 html  += '<tr>';//
                                 for(j=0;j<obj[i].data.length;j++)
                                 {
-								  if(i==0) { html+= '<th>'+obj[i].data[j]+'</th>';}
-                                  else { if (j==1) {
+								  if(i==0) { html+= '<th>'+obj[i].data[j]+'</th>';} //表頭
+                                  else { if (j==1) { 
 													  if (obj[i].data[j] == "") {html+= '<td></td>';}
-													  else {html+= '<td> <input type="checkbox" name="123" value="'+obj[i].data[j]+'"></td>';}
+													  else {html+= '<td> <input type="checkbox" name="outcheck" value="'+obj[i].data[j]+'"></td>';}
 												   }
+										 // else if (j==2) { //姓名
+															// if (i==1) { html+= '<td id="name" rowspan='+obj[i].data.length+'>'+obj[i].data[j]+'</td>'; }
+														// }
 										 else {html+= '<td>'+obj[i].data[j]+'</td>';}
 									   }
                                 }
@@ -202,6 +205,7 @@ var xmlhttp;
 }
 /* --- 商品下拉選單 --- (e) */
 
+
 /* --- 更改會員密碼 --- (e) */
 function Npass() {
 	document.getElementById("button_Npass").setAttribute("style",'background: #e0c3ac !important; border-color: #e0c3ac; color: #ffffff;')
@@ -259,10 +263,145 @@ function applyout() {
 	
 	if( check_status.length == 2) {document.getElementById("OrderList").classList.toggle("hide1");}
 	else {	
-			if (confirm("是否要申請出貨?") == true) {document.getElementById("OrderList").classList.toggle("hide1");}
+			if (confirm("是否要申請出貨?") == true) {
+				let temp000 = checked_list('outcheck');
+				let total = popup_out(temp000);
+				deli_money();
+				document.getElementById("dialog_out").show();
+				document.getElementById("all").setAttribute("class","bodyHide");
+				document.getElementById("OrderList").classList.toggle("hide1");
+				}
 			else {}
 		 }
 	
 }
 
+function checked_list(CheckboxName){
+      var obj=document.getElementsByName(CheckboxName);
+      var selected=[];
+	  var re = /\s*;\s*/;
+	  var data = [];
+      for (var i=0; i<obj.length; i++) {
+        if (obj[i].checked) {
+			selected = [];
+			selected[0] = obj[i].value.split(re)[0]; //單號
+			selected[1] = obj[i].value.split(re)[1]; //商品
+			selected[2] = obj[i].value.split(re)[2]; //款式
+			selected[3] = obj[i].value.split(re)[3]; //金額
+			data.push(selected)
+          }
+        }
+		console.log(data);
+		return data;
+      };
+	  
+
+	  
+function popup_out(data) {
+	let html = '<table id="out_list" class="outtable">'
+		html += '<tr> <th>訂貨人</th> <th>單號</th> <th>商品</th> <th>款式</th> <th>金額</th> </tr>' //表頭
+	
+	let total = 0;
+	
+	for ( i=0; i<data.length; i++) {
+
+		if ( i == 0 ) {html += '<tr> <td id="tdname" rowspan=' + data.length + '>' + uname + '</td>' ; } //第一列 名稱
+		else { html += '<tr>'; }
+
+		for ( j=0; j<data[i].length; j++) {
+			
+			
+			if ( j==3 ) { 
+							html += '<td> $' + data[i][j] + '</td>';
+							total += parseInt(data[i][j]); 
+						}
+			else { html += '<td>' + data[i][j] + '</td>'; }
+			
+			console.log(total);
+		}
+		html += '</tr>';
+	}
+	
+	html += '<tfoot> <tr> <td colspan=4 style="text-align:left;">Total</td> <td>$' + total +'</td> </tr> </tfoot>';
+	html += '</table>';
+	console.log(html);
+	document.getElementById("span_out").innerHTML = html;
+	return total;
+}
+
+function deli_money() {
+	temp000 = checked_list('outcheck');
+	total = popup_out(temp000);
+	
+	let temp = document.getElementById("deliver").value;
+	console.log(total + temp);
+	if (total < 1500) { total0 = total + parseInt(temp); }
+	
+	let html = '<p class="p"> 結帳總金額 : $';
+	html += total0;
+	console.log(html);
+	document.getElementById('total').innerHTML = html;
+	
+}
+
+function sent() {
+	let url = 'https://script.google.com/macros/s/AKfycbzFgwIbzSKUXlAjZsP7KKI-5HVvQ3Wxs31kEVnLRQCkJ71bntY/exec?html=';
+	let body = '<h3> 出貨申請 </h3>'
+	body += document.getElementById('span_out').innerHTML;
+	body += '<p class="p"> 運費: '+ document.getElementById("deliver").value + '</p>';
+	body += document.getElementById('total').innerHTML;
+
+	url += body;
+	
+	var oReq = new XMLHttpRequest();
+	oReq.open('get',url,true);
+	oReq.send();
+	
+	dialog_out.close();
+	document.getElementById("all").classList.toggle("bodyHide")
+
+}
 /* --- 出貨申請 --- (e) */
+
+
+/* --- 讀取出貨申請 --- (s) */
+function read_out() {
+	document.getElementById("read_out_list").classList.toggle("bodyHide")
+	var xmlhttp;
+
+        if (window.XMLHttpRequest)
+          {// code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp=new XMLHttpRequest();
+          }
+        else
+          {// code for IE6, IE5
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+        xmlhttp.onreadystatechange=function()
+          {
+                  if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+                  {
+                        var result = xmlhttp.responseText;
+                        var obj = JSON.parse(result,dateReviver);//解析json字串為json物件形式
+                                                
+                        var html = '';//table html 語法開始
+                        
+                        for (var i = 0; i < obj.length; i ++ ) { //row
+                            html += '<hr>';    
+                            html += obj[i].data[0];
+							html += '<p class="p"> 更新時間 : ' + obj[i].data[1] + '</p>';            
+                        }
+                        
+                        console.log(html);
+                        document.getElementById("read_out_list").innerHTML=html;
+                        if(obj.length==1) //只有一筆代表查不到資料
+                        document.getElementById("read_out_list").innerHTML="查無資料";
+                  }
+
+          }
+    var url="https://script.google.com/macros/s/AKfycbzzefWfLLyYFccNw0IBqKN6jX82JYXBxLKJR0X2hu7YKN9Oxxk/exec";
+        xmlhttp.open("get",url,true);
+        xmlhttp.send();
+}
+
+/* --- 讀取出貨申請 --- (e) */
