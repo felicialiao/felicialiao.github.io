@@ -350,11 +350,16 @@ function sent() {
 	body += document.getElementById('span_out').innerHTML;
 	body += '<p class="p"> 運費: '+ document.getElementById("deliver").value + '</p>';
 	body += document.getElementById('total').innerHTML;
-
+	
 	url += body;
 	
+	let deli_type = '';
+	if (document.getElementById("deliver").value == 35) {deli_type = '7-11';}
+	else if (document.getElementById("deliver").value == 39) {deli_type = 'Fami';}
+	else {deli_type = '面交';}
+	
 	var oReq = new XMLHttpRequest();
-	oReq.open('get',url,true);
+	oReq.open('get',url + '&out_type=' + deli_type,true);
 	oReq.send();
 	
 	dialog_out.close();
