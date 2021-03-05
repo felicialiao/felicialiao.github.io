@@ -33,28 +33,6 @@ document.getElementById("enddateId").value = new Date().toISOString().slice(0,10
 /* 抓預設日期 */
 
 
-/* 帳號密碼資料 */
-// let username = ["admin","我","鄭宇茵"]
-// let mypassword = ["admin","Init1234","Init1234"]
-// let name = "UName";
-/* 帳號密碼資料 */
-
-
-
-// function login() {
-	// let u = document.getElementById("myuser").value;
-	// let p = document.getElementById("mypass").value;
-	// let i = username.indexOf(u);
-	
-	// if ( i != -1) {
-		// if( p == mypassword[i]) {
-		// alert(u + " login sucess");
-		// document.getElementById("formlogin").action = "member.html"+"#"+u;
-		// }
-		// else {alert(u + " password error");}
-	// }
-	// else {alert(u + " user name not exit");}
-// }
 
 function logout(a) {
 	if (confirm("是否要登出?") == true)
@@ -359,7 +337,7 @@ function sent() {
 	else {deli_type = '面交';}
 	
 	var oReq = new XMLHttpRequest();
-	oReq.open('get',url + '&out_type=' + deli_type + '&name=' + ,true);
+	oReq.open('get',url + '&out_type=' + deli_type + '&name=' + uname,true);
 	oReq.send();
 	
 	dialog_out.close();
