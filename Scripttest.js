@@ -359,7 +359,7 @@ function sent() {
 	else {deli_type = '面交';}
 	
 	var oReq = new XMLHttpRequest();
-	oReq.open('get',url + '&out_type=' + deli_type,true);
+	oReq.open('get',url + '&out_type=' + deli_type + '&name=' + ,true);
 	oReq.send();
 	
 	dialog_out.close();
