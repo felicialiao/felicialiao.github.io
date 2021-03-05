@@ -340,6 +340,9 @@ function sent() {
 	oReq.open('get',url + '&out_type=' + deli_type + '&name=' + uname,true);
 	oReq.send();
 	
+	oReq.open('get','https://script.google.com/macros/s/AKfycby3GS6u4F0eCaUFobIDSWNe0MYgPwagG61KUx1Fng/exec',true);
+	oReq.send();
+	
 	dialog_out.close();
 	document.getElementById("all").classList.toggle("bodyHide")
 
