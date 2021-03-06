@@ -337,10 +337,10 @@ function sent() {
 	else {deli_type = '面交';}
 	
 	var oReq = new XMLHttpRequest();
-	oReq.open('get',url + '&out_type=' + deli_type + '&name=' + uname,true);
+	oReq.open('get',url + '&out_type=' + deli_type + '&name=' + uname,true);  //寫入
 	oReq.send();
 	
-	oReq.open('get','https://script.google.com/macros/s/AKfycby3GS6u4F0eCaUFobIDSWNe0MYgPwagG61KUx1Fng/exec',true);
+	oReq.open('get','https://script.google.com/macros/s/AKfycbwoNJwBZFtKIHINCDR86ariDJdLPco94mnR70sintQd4vE_8E6m/exec',true);  //通知
 	oReq.send();
 	
 	dialog_out.close();
