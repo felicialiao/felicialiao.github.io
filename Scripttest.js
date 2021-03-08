@@ -9,6 +9,7 @@ function myChangePage() {
     document.getElementById("login").setAttribute("class","");
   } else if (document.getElementById("seg1").checked) {
     document.getElementById("new2").setAttribute("class","");
+	  dialog_out.colse();
   } else if (document.getElementById("seg2").checked) {
     document.getElementById("new3").setAttribute("class","");
   } else if (document.getElementById("seqadmin").checked) {
