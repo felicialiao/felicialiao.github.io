@@ -11,7 +11,11 @@ body #content {
 	flex-direction:column;
 }
 
-dialog {
+#output {
+	align-items: center;
+	/* display:flex; */
+	flex-direction:column;
+	width:fit-content;
 	background: #efede3;
 	color: #3e3736;
 	padding: 5px 40px;
@@ -19,10 +23,11 @@ dialog {
 	border-radius: 10px;
 	margin-bottom:50px;
 	padding-bottom:30px;
-	margin : 5% 30%;
+	margin : 5% 10%;
+	border:2px #6b5152 solid;
 }
 
-input:not([type="checkbox"]) {
+input:not([type="checkbox"],[type="image"]) {
     -webkit-appearance: none;  /* Safari 和 Chrome，常用於iOS下移除內建樣式 */
     -moz-appearance: none;     /* FireFox */
     appearance: none;
@@ -56,7 +61,7 @@ input:not([type="checkbox"]) {
 }
 
 
-input {
+input:not([type="image"]) {
 	display: block;
 	text-align: center;
 	border-style:solid;
@@ -68,6 +73,15 @@ input {
 	outline: none;
 	cursor: pointer;
 }
+
+input[type="image"] {
+	height:35px;
+	margin: 10px 40px;
+}
+input[type="image"]:focus {
+	border:none;
+}
+
 
 input[type="text"],
 .login input {
@@ -163,8 +177,8 @@ input[type="button"].TextButton {
 	display:none;
 }
 
-dialog input, dialog select,
-.textBody input, .textBody select {
+#dialog_out input, #dialog_out select,
+.textBody input:not([type="image"]), .textBody select {
 	margin: auto 5px;
 	padding: 5px 5px 5px 10px;
 	border: 2px solid #b8926a;
@@ -178,7 +192,7 @@ dialog input, dialog select,
 	background:#fbfbf9;
 }
 
-dialog input[type="button"],
+#dialog_out input[type="button"],
 .textBody input[type="button"] {
 	display: inline-grid;
 	padding: 5px 20px;
@@ -293,7 +307,7 @@ input[type="checkbox"] {
 	font-weight: 900;
 }
 
-#read_out_list hr {
+#adminbody hr {
 	border:none;
 	border-top : 1px #b8926a dashed;
 }
