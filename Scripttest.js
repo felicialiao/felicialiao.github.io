@@ -341,7 +341,6 @@ function sent() {
 	oReq.send();
 	
 	oReq.open('get','https://script.google.com/macros/s/AKfycbwoNJwBZFtKIHINCDR86ariDJdLPco94mnR70sintQd4vE_8E6m/exec',true);  //通知
-	oReq.send();
 	
 	dialog_out.close();
 	document.getElementById("all").classList.toggle("bodyHide")
