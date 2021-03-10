@@ -180,9 +180,10 @@
 		<span id="admin_order_list" class="bodyHide"> 
 			<form>
 				<select name='order_name' id='order_name'> <option value="all">請選擇姓名</option>  </select>
-				<input type="button" value="查詢" onclick="admin_order()"/>
-				<div id="admin_order"> </div>
+				<input type="button" value="查詢" onclick="admin_order(order_name.value)"/>
+				<span id="admin_order_ID"> </span>
 			</form>
+			<div id="admin_order"> </div>
 		</span>  <!-- 訂單登記 -->
 		<span id="in_list" class="bodyHide">  </span>  <!-- 進貨查詢 -->
 

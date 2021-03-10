@@ -13,10 +13,15 @@ let uname = decodeURI(url.split("#")[1]);
 
 document.getElementById("uname").innerHTML =  uname; //會員頁面寫入會員名稱
 
-if (uname == "admin" || uname == "我" ) {document.getElementById("labadmin").setAttribute("class","");} //admin設定
+if (uname == "admin" || uname == "我" ) //admin設定
+{
+	document.getElementById("labadmin").setAttribute("class","");
+	unameDropDown(0,'order_name'); //admin抓取會員名稱
+} 
 
 skuDropDown(startdateId.value,enddateId.value,2,'sku'); //商品下拉選單
 showHint(startdateId.value,enddateId.value,sku.value,arr.value,uname); //預設抓訂單查詢
+
 
 /* --- onStartup (e) ---*/
 
@@ -36,7 +41,6 @@ function myChangePage() {
     document.getElementById("new3").setAttribute("class","");
   } else if (document.getElementById("seqadmin").checked) {
 	document.getElementById("bodyadmin").setAttribute("class","");
-	unameDropDown(0,'order_name');
   } else if (document.getElementById("logout").checked) {
 	document.getElementById("logout").action = "index.html";
   }
@@ -135,6 +139,7 @@ function showHint(BeginDate,EndDate,sku,arr,uid)
           }
     var url="https://script.google.com/macros/s/AKfycbxlpHIv_dx9xBbFzUX3gJeqzhRLEQRNJjmKD6eeGgU0O966F6oL/exec";
         xmlhttp.open("get",url+"?uid="+uid+"&BeginDate="+BeginDate+"&EndDate="+EndDate+"&sku="+sku+"&arr="+arr,true);
+		console.log(url+"?uid="+uid+"&BeginDate="+BeginDate+"&EndDate="+EndDate+"&sku="+sku+"&arr="+arr);
         xmlhttp.send();
 }
 /* --- 查詢訂單 --- (e) */
@@ -424,7 +429,7 @@ function unameDropDown(targetnum,selectID)
 						
             for (var i = 1; i < obj.length; i ++ ) 
 			{						
-				s.options[s.options.length]= new Option(obj[i].data[num],obj[i].data[num]);
+				s.options[s.options.length]= new Option(obj[i].data,obj[i].data);
             }
         }
     }
@@ -434,15 +439,46 @@ function unameDropDown(targetnum,selectID)
 }
 /* --- 訂單姓名下拉選單 --- (e) */
 
-/* --- admin_查詢訂單 --- (s) */
-function admin_order()
+
+/* --- 訂單姓名取FB_ID --- (s) */
+function uname_getID(uid,div_name)
 {
-	showHint(startdateId.value,enddateId.value,all,all,order_name.value);
-	console.log(document.getElementById("order_status").innerHTML);
+	let xmlhttp;
+
+    if (window.XMLHttpRequest) { xmlhttp =new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
+    else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
+        
+	xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+        {
+            var result=xmlhttp.responseText;
+            var obj = JSON.parse(result,dateReviver);//解析json字串為json物件形式
+			
+			let s = document.getElementById(div_name);
+				let message_url = "https://www.facebook.com/messages/t/" + obj[0].data[1];
+				let html = '<a href="' + message_url;
+				html += '" target = "_blank"> <image src="facebook.png" alt="FB Message" width="40px"> </a>';
+				s.innerHTML = html;
+        }
+    }
+    var url="https://script.google.com/macros/s/AKfycbwAZxTa-x65J-_bv5uhUNmwKC5uDzjli1U8CTAv9kNo0ArzTEA/exec";
+        xmlhttp.open("get",url + '?uid=' + uid,true);
+        xmlhttp.send();
+}
+/* --- 訂單姓名取FB_ID --- (e) */
+
+/* --- admin_查詢訂單 --- (s) */
+function admin_order(uid)
+{
+	document.getElementById("admin_order_ID").innerHTML = '';
+	uname_getID(decodeURI(uid),'admin_order_ID');
+	showHint(startdateId.value,enddateId.value,'all','all',decodeURI(uid));
 	document.getElementById("admin_order").innerHTML = document.getElementById("order_status").innerHTML;
 }
 
 /* --- admin_查詢訂單 --- (e) */
+
 
 /* --- Line Notify 測試 --- (s) */
 function test01() {
@@ -487,3 +523,22 @@ function test02 () {
 }
 
 /* --- Line Notify 測試 --- (e) */
+window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '200570165153533',
+      xfbml      : true,
+      version    : 'v10.0'
+    });
+    FB.AppEvents.logPageView();
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+/* --- FB Message 測試 --- (s) */
+
+/* --- FB Message 測試 --- (e) */
