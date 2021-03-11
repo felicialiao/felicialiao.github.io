@@ -16,11 +16,14 @@ document.getElementById("uname").innerHTML =  uname; //會員頁面寫入會員�
 if (uname == "admin" || uname == "我" ) //admin設定
 {
 	document.getElementById("labadmin").setAttribute("class","");
-	unameDropDown(0,'order_name'); //admin抓取會員名稱
+	unameDropDown(0,'order_name_list'); //admin抓取會員名稱
+	getlist('order_uid_list',0,null,null,null) ;
+	getlist('order_sku_list',1,null,null,null) ;
+	getlist('order_num_list',2,null,null,null) ;
 } 
 
 skuDropDown(startdateId.value,enddateId.value,2,'sku'); //商品下拉選單
-showHint(startdateId.value,enddateId.value,sku.value,arr.value,uname); //預設抓訂單查詢
+showHint(startdateId.value,enddateId.value,sku.value,arr.value,uname,'order_status'); //預設抓訂單查詢
 
 
 /* --- onStartup (e) ---*/
@@ -100,7 +103,7 @@ var dateReviver = function (key, value) {
 };
 
 
-function showHint(BeginDate,EndDate,sku,arr,uid)
+function showHint(BeginDate,EndDate,sku,arr,uid,order_status)
 {
 		var xmlhttp;
 		
@@ -114,7 +117,7 @@ function showHint(BeginDate,EndDate,sku,arr,uid)
                         var result=xmlhttp.responseText;
                         var obj = JSON.parse(result,dateReviver);//解析json字串為json物件形式
                                                 
-                        var html = '<table id="OrderList" class="OrderList hide1">';//table html 語法開始
+                        var html = '<table id="'+ order_status + 'OrderList" class="OrderList hide1">';//table html 語法開始
                         
                         for (var i = 0; i < obj.length; i ++ ) {//
                                 html  += '<tr>';//
@@ -132,9 +135,9 @@ function showHint(BeginDate,EndDate,sku,arr,uid)
                         }
                         html+="</table>";
 						
-                        document.getElementById("order_status").innerHTML = html;
+                        document.getElementById(order_status).innerHTML = html;
                         if(obj.length==1) //只有一筆代表查不到資料
-                                document.getElementById("order_status").innerHTML = "查無資料";
+                                document.getElementById(order_status).innerHTML = "查無資料";
                   }
           }
     var url="https://script.google.com/macros/s/AKfycbxlpHIv_dx9xBbFzUX3gJeqzhRLEQRNJjmKD6eeGgU0O966F6oL/exec";
@@ -230,20 +233,24 @@ function ChangeClose()
 
 
 /* --- 出貨申請 --- (s) */
-function applyout() 
-{
-	let check_status = document.getElementById("OrderList").classList;
+function applyout(order_status) 
+{	
+	let uidname = uname;
+	if(uname == "我" || uname == "admin") {uidname = document.getElementById('order_name').value;}
+	
+	let name = order_status + "OrderList"
+	let check_status = document.getElementById(name).classList;
 
-	if( check_status.length == 2) {document.getElementById("OrderList").classList.toggle("hide1");}
+	if( check_status.length == 2) {document.getElementById(name).classList.toggle("hide1");}
 	else {	
 			if (confirm("是否要申請出貨?") == true) 
 			{
 				let temp000 = checked_list('outcheck');
-				let total = popup_out(temp000);
-				deli_money();
+				// let total = popup_out(temp000,uidname);
+				deli_money(uidname);
 				document.getElementById("dialog_out").classList.toggle("bodyHide");
 				document.getElementById("all").setAttribute("class","bodyHide");
-				document.getElementById("OrderList").classList.toggle("hide1");
+				document.getElementById(name).classList.toggle("hide1");
 			}
 			else {}
 		 }
@@ -272,6 +279,9 @@ function checked_list(CheckboxName) //整理資料
 	  
 function popup_out(data) //整理成表格html
 {
+	let uidname = uname;
+	if(uname == "我" || uname == "admin") {uidname = document.getElementById('order_name').value;}
+
 	let html = '<table id="out_list" class="outtable">'
 		html += '<tr> <th>訂貨人</th> <th>單號</th> <th>商品</th> <th>款式</th> <th>數量</th> <th>金額</th> </tr>' //表頭
 	
@@ -280,7 +290,7 @@ function popup_out(data) //整理成表格html
 	for ( i=0; i<data.length; i++) 
 	{
 
-		if ( i == 0 ) {html += '<tr> <td id="tdname" rowspan=' + data.length + '>' + uname + '</td>' ; } //第一列 名稱
+		if ( i == 0 ) {html += '<tr> <td id="tdname" rowspan=' + data.length + '>' + decodeURI(uidname) + '</td>' ; } //第一列 名稱
 		else { html += '<tr>'; }
 
 		for ( j=0; j<data[i].length; j++) 
@@ -303,8 +313,11 @@ function popup_out(data) //整理成表格html
 
 function deli_money() //計算運費
 {
+	let uidname = uname;
+	if(uname == "我" || uname == "admin") {uidname = document.getElementById('order_name').value;}
+
 	temp000 = checked_list('outcheck');
-	total = popup_out(temp000);
+	total = popup_out(temp000,uidname);
 	
 	let temp = document.getElementById("deliver").value;
 	if (total < 1500) { total0 = total + parseInt(temp); }
@@ -316,6 +329,8 @@ function deli_money() //計算運費
 
 function sent() //使用者出貨申請寫入資料庫，並Line通知admin
 {
+	let uid = uname;
+	if (uname == "我" || uname == "admin") { uid = document.getElementById("order_name").value; }
 	let url = 'https://script.google.com/macros/s/AKfycbzFgwIbzSKUXlAjZsP7KKI-5HVvQ3Wxs31kEVnLRQCkJ71bntY/exec?html=';
 	let body = '<h3> 出貨申請 </h3>'
 	body += document.getElementById('span_out').innerHTML;
@@ -330,7 +345,7 @@ function sent() //使用者出貨申請寫入資料庫，並Line通知admin
 	else {deli_type = '面交';}
 	
 	var oReq = new XMLHttpRequest();
-	oReq.open('get',url + '&out_type=' + deli_type + '&name=' + uname,true);  //使用者出貨申請寫入資料庫
+	oReq.open('get',url + '&out_type=' + deli_type + '&name=' + uid,true);  //使用者出貨申請寫入資料庫
 	oReq.send();
 	alert("完成申請");
 	
@@ -348,6 +363,7 @@ function admin_menu()
 	document.getElementById("read_out_list").setAttribute("calss","bodyHide");
 	document.getElementById("admin_order_list").setAttribute("calss","bodyHide");
 	document.getElementById("in_list").setAttribute("calss","bodyHide");
+	document.getElementById("write_out_list").setAttribute("calss","bodyHide");
 }
 /* --- admin_menu --- (e) */
 
@@ -372,12 +388,15 @@ function read_out_load()
                         
                         for (var i = 0; i < obj.length; i ++ ) { //row
                             html += '<hr>';    
-                            html += obj[i].data[0];
-							html += '<p class="p"> 更新時間 : ' + obj[i].data[1] + '</p>';            
+                            html += obj[i].data[1];
+							html += '<p class="p"> 更新時間 : ' + obj[i].data[2] + '</p>';
+							html += '<input type="button" id="btn_msg" value="通知" onclick="out_status(this.id,' + obj[i].data[1] + ')"/>'; 
+							html += '<input type="button" id="btn_out" value="出貨" onclick="out_status(this.id,' + obj[i].data[1] + ')"/>'; 
+							html += '<input type="button" id="btn_mny" value="收款" onclick="out_status(this.id,' + obj[i].data[1] + ')"/>'; 
                         }
-                        document.getElementById("read_out_list").innerHTML = html;
+                        document.getElementById("read_out_list").innerHTML = '<div>' + html + '</div>';
                         if(obj.length==0) //只有一筆代表查不到資料
-                        document.getElementById("read_out_list").innerHTML = "查無資料";
+                        document.getElementById("read_out_list").innerHTML = '<div>' + 查無資料 + '</div>';
                   }
 
           }
@@ -394,6 +413,32 @@ function read_out() {
 	}
 	document.getElementById("adminbody").innerHTML = '';
 	document.getElementById("adminbody").innerHTML = document.getElementById("read_out_list").innerHTML;
+}
+
+function out_status(btn_name,out_num) //出貨訂單狀態異動
+{
+	let time = new date();
+	let para = '';
+	if(btn_name == 'btn_msg') {para = 'msg='; }
+	else if(btn_name == 'btn_out') {para = 'out='; }
+	else if(btn_name == 'btn_mny') {para = 'mny='; }
+	
+	var xmlhttp;
+        
+	if (window.XMLHttpRequest) { xmlhttp=new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
+    else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
+    
+	xmlhttp.onreadystatechange=function()
+          {
+                  if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+                  {
+					  alert(訂單狀態異動完成);
+				  }
+          }
+    var url="";
+		url += '?num=' + out_num;
+        xmlhttp.open("get",url + para + time,true);
+        xmlhttp.send();
 }
 /* --- 讀取出貨申請 --- (e) */
 
@@ -428,8 +473,10 @@ function unameDropDown(targetnum,selectID)
 			let num = parseInt(targetnum);
 						
             for (var i = 1; i < obj.length; i ++ ) 
-			{						
-				s.options[s.options.length]= new Option(obj[i].data,obj[i].data);
+			{	
+				let options =  document.createElement('option');
+				options.value = obj[i].data;
+				s.appendChild(options);
             }
         }
     }
@@ -468,16 +515,70 @@ function uname_getID(uid,div_name)
 }
 /* --- 訂單姓名取FB_ID --- (e) */
 
+
 /* --- admin_查詢訂單 --- (s) */
 function admin_order(uid)
 {
 	document.getElementById("admin_order_ID").innerHTML = '';
 	uname_getID(decodeURI(uid),'admin_order_ID');
-	showHint(startdateId.value,enddateId.value,'all','all',decodeURI(uid));
-	document.getElementById("admin_order").innerHTML = document.getElementById("order_status").innerHTML;
+	showHint(startdateId.value,enddateId.value,'all','到',decodeURI(uid),'admin_order');
+}
+/* --- admin_查詢訂單 --- (e) */
+
+/* --- admin_出貨作業 --- (s) */
+function work_out() {
+	document.getElementById("adminbody").innerHTML = '';
+	document.getElementById("adminbody").innerHTML = document.getElementById("write_out_list").innerHTML;
 }
 
-/* --- admin_查詢訂單 --- (e) */
+
+function cleanlist(list_name,targetnum) 
+{
+	let s = document.getElementById(list_name);
+	while (s.options.length > 0)
+	{
+		s.removeChild(s.options[0]);
+	}
+}
+
+
+// 0:姓名 1:商品 2:單號
+function getlist(list_name,targetnum,name,sku,ornum) 
+{
+	cleanlist(list_name,targetnum);
+	let xmlhttp;
+
+    if (window.XMLHttpRequest) { xmlhttp =new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
+    else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
+        
+	xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+        {
+            var result=xmlhttp.responseText;
+            var obj = JSON.parse(result,dateReviver);//解析json字串為json物件形式		
+			
+			let s = document.getElementById(list_name);
+			
+            for (var i = 0; i < obj.length; i ++ ) 
+			{	
+				let options =  document.createElement('option');
+				options.value = obj[i].data;
+				s.appendChild(options);
+            }
+        }
+    }
+	let num = parseInt(targetnum);
+    var url = "https://script.google.com/macros/s/AKfycbyzXRyqVm2PWX9Zi9xiTodrRuXRLsstC0xkXrUJb7-Jf1hNviA/exec";
+		url += '?target=' + num;
+		if(name != null && name != '') { url += '&uid=' + name;}
+		if(sku != null && sku != '' ) { url += '&sku=' + sku;}
+		if(ornum != null && ornum != '') { url += '&order_num=' + ornum;}
+		
+        xmlhttp.open("get",url,true);
+        xmlhttp.send();
+}
+/* --- admin_出貨作業 --- (e) */
 
 
 /* --- Line Notify 測試 --- (s) */

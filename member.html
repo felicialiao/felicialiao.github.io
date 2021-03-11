@@ -76,8 +76,8 @@
 	
 	<div id="new2" class="bodyHide">
 	<div class="textBody">
-	<h3> 訂單查詢 </h3>
-	<p style="text-align: left; margin:0 10px;"> 篩選條件 </p>
+	<h2> 訂單查詢 </h2>
+	<h3 style="text-align: left; margin:0 10px;"> 篩選條件 </h3>
 	<table class="filter">
 		<tr>
 			<th>訂單完成日期 - 起</th>
@@ -99,13 +99,13 @@
 				<select name="arr" id="arr"> <option value="all">全部狀態</option>  
 				<option value="到">已到貨</option> <option value="">未到貨</option> </select> 
 			</td>
-			<td> <input type="button" name="inq" value="查詢" onclick="showHint(startdateId.value,enddateId.value,sku.value,arr.value,uname);"> </td>
+			<td> <input type="button" name="inq" value="查詢" onclick="showHint(startdateId.value,enddateId.value,sku.value,arr.value,uname,'order_status');"> </td>
 		</tr>
 	</table>
 	<br><hr><br>
 	<span id="order_status"></span>
 	
-	<input type="button" value="我要出貨" onclick=' applyout()'>
+	<input type="button" value="我要出貨" onclick=' applyout("order_status")'>
 	<span id="out_list" class="bodyHide"> 
 		<br><hr><br>
 		<input type="checkbox">
@@ -115,7 +115,7 @@
 	
 	<div id="new3" class="bodyHide">
 		<div class="textBody">
-		  <h3>✨下單前請先閱讀購物板規✨</h3>
+		  <h2>✨下單前請先閱讀購物板規✨</h2>
 		  <ul style="padding: 5px 5px; margin: 5px 5px;">
 		  <li><h4> 訂購方式 </h4></li>
 			<ol>
@@ -164,29 +164,49 @@
 
 	<div id="bodyadmin" class="bodyHide">
 		<div class="textBody">
-		<h3>管理員</h3>
+		<h2>管理員</h2>
 		
-		<menu>
+		<menu style="display:flex;">
 			<input type="button" id="read_out" value="出貨申請查詢" onclick="read_out()">
 			<input type="button" id="order_work" value="訂單登記" onclick="order_work()">
 			<input type="button" id="" value="進貨查詢" onclick="admin_menu()">
 			<input type="button" id="" value="到貨作業" onclick="admin_menu()">
-			<input type="button" id="" value="出貨申請" onclick="admin_menu()">
+			<input type="button" id="" value="出貨作業" onclick="work_out()">
 		</menu>
 		<hr>
 		
-		<span id="adminbody"> </span>
-		<span id="read_out_list" class="bodyHide">  </span>  <!-- 出貨申請查詢 -->
-		<span id="admin_order_list" class="bodyHide"> 
-			<form>
-				<select name='order_name' id='order_name'> <option value="all">請選擇姓名</option>  </select>
-				<input type="button" value="查詢" onclick="admin_order(order_name.value)"/>
-				<span id="admin_order_ID"> </span>
+		<div id="adminbody"> </div>
+		<div id="read_out_list" class="bodyHide"> <div></div> </div>  <!-- 出貨申請查詢 -->
+		<div id="admin_order_list" class="bodyHide"> <!-- 訂單登記 -->
+			<div>
+				<form>
+					<label style="display:flex;">
+						請選擇姓名 <input list="order_name_list" name='order_name' id='order_name' />
+						<input type="button" value="查詢" onclick="admin_order(order_name.value)" />
+					</label>
+					<datalist id="order_name_list"> <option value="請選擇姓名" defaultSelected=ture></option></datalist>
+					<span id="admin_order_ID"> </span>
+				</form>
+				<span id="admin_order"> </span>
+				<input type="button" value="我要出貨" onclick=' applyout("admin_order")'>
+			</div>
+		</div>  
+		
+		<div id="in_list" class="bodyHide">  </div>  <!-- 進貨查詢 -->
+		
+		<div id="write_out_list" class="bodyHide"> <!-- 出貨作業 -->
+			<div>
+			<form class="out_list">
+				<label> 姓名 : <input list="order_uid_list" onchange="getlist('order_sku_list',1,this.value,null,null); getlist('order_num_list',2,this.value,null,null);"> </label>
+				<label> 單號 : <input list="order_num_list" onchange="getlist('order_uid_list',0,null,null,this.value); getlist('order_sku_list',1,null,null,this.value);"> </label>
+				<label> 商品 : <input list="order_sku_list" onchange="getlist('order_uid_list',0,null,this.value,null); getlist('order_num_list',2,null,this.value,null);"> </label>
+				<input type="button" value="確認"/>
+				<datalist id="order_uid_list"></datalist>
+				<datalist id="order_num_list"></datalist>
+				<datalist id="order_sku_list"></datalist>
 			</form>
-			<div id="admin_order"> </div>
-		</span>  <!-- 訂單登記 -->
-		<span id="in_list" class="bodyHide">  </span>  <!-- 進貨查詢 -->
-
+			</div>
+		</div>  
 		<table>
 		</table>
 		</div>
@@ -197,7 +217,7 @@
 	
 	<div id="dialog_out" class="bodyHide">
 		<div id="output">
-			<h3> 出貨申請 </h3>
+			<h2> 出貨申請 </h2>
 			<span id="span_out"> </span>
 			
 			<select name="deliver" id="deliver" onchange="deli_money(total)" style="margin-left:20px !important;"> 
