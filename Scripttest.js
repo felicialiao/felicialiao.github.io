@@ -390,13 +390,16 @@ function read_out_load()
                             html += '<hr>';    
                             html += obj[i].data[1];
 							html += '<p class="p"> 更新時間 : ' + obj[i].data[2] + '</p>';
-							html += '<input type="button" id="btn_msg" value="通知" onclick="out_status(this.id,' + obj[i].data[1] + ')"/>'; 
-							html += '<input type="button" id="btn_out" value="出貨" onclick="out_status(this.id,' + obj[i].data[1] + ')"/>'; 
-							html += '<input type="button" id="btn_mny" value="收款" onclick="out_status(this.id,' + obj[i].data[1] + ')"/>'; 
+							
+							let temp = "'" + obj[i].data[0] + "'";
+							
+							html += '<input type="button" id="btn_msg" value="通知" onclick="out_status(this.id,' + temp + ')"/>'; 
+							html += '<input type="button" id="btn_out" value="出貨" onclick="out_status(this.id,' + temp + ')"/>'; 
+							html += '<input type="button" id="btn_mny" value="收款" onclick="out_status(this.id,' + temp + ')"/>'; 
                         }
                         document.getElementById("read_out_list").innerHTML = '<div>' + html + '</div>';
                         if(obj.length==0) //只有一筆代表查不到資料
-                        document.getElementById("read_out_list").innerHTML = '<div>' + 查無資料 + '</div>';
+                        document.getElementById("read_out_list").innerHTML = '<div> 查無資料 </div>';
                   }
 
           }
@@ -417,11 +420,10 @@ function read_out() {
 
 function out_status(btn_name,out_num) //出貨訂單狀態異動
 {
-	let time = new date();
 	let para = '';
-	if(btn_name == 'btn_msg') {para = 'msg='; }
-	else if(btn_name == 'btn_out') {para = 'out='; }
-	else if(btn_name == 'btn_mny') {para = 'mny='; }
+	if(btn_name == 'btn_msg') {para = '&msg=1'; }
+	else if(btn_name == 'btn_out') {para = '&out=1'; }
+	else if(btn_name == 'btn_mny') {para = '&mny=1'; }
 	
 	var xmlhttp;
         
@@ -432,12 +434,13 @@ function out_status(btn_name,out_num) //出貨訂單狀態異動
           {
                   if (xmlhttp.readyState==4 && xmlhttp.status==200)      
                   {
-					  alert(訂單狀態異動完成);
+					  alert('訂單狀態異動完成');
 				  }
           }
-    var url="";
+    var url="https://script.google.com/macros/s/AKfycbwC_1PPOWeQs3ee7TV67ETGbNweTWyAvogwf_OXiea_ZuqD77k/exec";
 		url += '?num=' + out_num;
-        xmlhttp.open("get",url + para + time,true);
+        xmlhttp.open("get",url + para,true);
+		console.log(url + para);
         xmlhttp.send();
 }
 /* --- 讀取出貨申請 --- (e) */
