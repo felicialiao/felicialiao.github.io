@@ -197,14 +197,15 @@
 		<div id="write_out_list" class="bodyHide"> <!-- 出貨作業 -->
 			<div>
 			<form class="out_list">
-				<label> 姓名 : <input list="order_uid_list" onchange="getlist('order_sku_list',1,this.value,null,null); getlist('order_num_list',2,this.value,null,null);"> </label>
-				<label> 單號 : <input list="order_num_list" onchange="getlist('order_uid_list',0,null,null,this.value); getlist('order_sku_list',1,null,null,this.value);"> </label>
-				<label> 商品 : <input list="order_sku_list" onchange="getlist('order_uid_list',0,null,this.value,null); getlist('order_num_list',2,null,this.value,null);"> </label>
-				<input type="button" value="確認"/>
+				<label> 姓名 : <input id='out_list_uid' list="order_uid_list" onchange="getlist('order_sku_list',1,this.value,null,null); getlist('order_num_list',2,this.value,null,null);"> </label>
+				<label> 單號 : <input id='out_list_num' list="order_num_list" onchange="getlist('order_uid_list',0,null,null,this.value); getlist('order_sku_list',1,null,null,this.value);"> </label>
+				<label> 商品 : <input id='out_list_sku' list="order_sku_list" onchange="getlist('order_uid_list',0,null,this.value,null); getlist('order_num_list',2,null,this.value,null);"> </label>
+				<input type="button" value="確認" onclick="getContent('out_work_content',out_list_uid.value,out_list_sku.value,out_list_num.value)"/>
 				<datalist id="order_uid_list"></datalist>
 				<datalist id="order_num_list"></datalist>
 				<datalist id="order_sku_list"></datalist>
 			</form>
+			<span id="out_work_content"> </span>
 			</div>
 		</div>  
 		<table>

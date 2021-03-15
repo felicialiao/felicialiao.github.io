@@ -528,6 +528,8 @@ function admin_order(uid)
 }
 /* --- admin_查詢訂單 --- (e) */
 
+
+
 /* --- admin_出貨作業 --- (s) */
 function work_out() {
 	document.getElementById("adminbody").innerHTML = '';
@@ -579,6 +581,101 @@ function getlist(list_name,targetnum,name,sku,ornum)
 		if(ornum != null && ornum != '') { url += '&order_num=' + ornum;}
 		
         xmlhttp.open("get",url,true);
+        xmlhttp.send();
+}
+
+function getContent(span_name,uid,sku,ornum) 
+{
+	let xmlhttp;
+
+    if (window.XMLHttpRequest) { xmlhttp =new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
+    else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
+        
+	xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+        {
+            var result=xmlhttp.responseText;
+            var obj = JSON.parse(result,dateReviver);//解析json字串為json物件形式		
+			
+			let s = document.getElementById(span_name);
+			
+			let html = '<hr> <table class="outtable">';
+			let header = '<tr>';
+			let total = 0;
+			let footer = '<tfoot> <tr> <td colspan=8 style="text-align:left;">Total</td> <td>$';
+			let key = '';
+                     
+			//表頭		 
+			for(j=0;j<obj[0].data.length;j++) { header += '<th>'+obj[0].data[j]+'</th>'; }  
+			header += '</tr>';
+			
+			for (var i = 1; i < obj.length; i ++ ) { //row
+                html  += '<tr>';
+				
+				if (i != 1 && obj[i].data[0] != obj[i-1].data[0]) { 
+					html += footer + total +'</td> </tr> </tfoot>'; 
+					html += '</table>';
+					html += '<input type="button" value="出貨" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
+					html += '<input type="button" value="收款" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
+					html += '<hr>';
+					key = '';
+				} //表尾
+				
+				if (obj[i].data[0] != obj[i-1].data[0]) { 
+					html += '<table class="outtable">'
+					html += header; 
+					total = 0;
+				} //表頭
+							
+				key += obj[i].data[4] + '_' + obj[i].data[5] + ';' ;
+				
+				for(j=0;j<obj[i].data.length;j++) { //col 
+					if(j==8) { html+= '<td>$'+obj[i].data[j]+'</td>';	total += obj[i].data[j];}
+					else {html+= '<td>'+obj[i].data[j]+'</td>';	}
+				}
+                html  += '</tr>';  
+            }
+            html += footer + total +'</td> </tr> </tfoot>'; 
+			html +='</table>'; 
+			html += '<input type="button" value="出貨" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
+			html += '<input type="button" value="收款" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
+			
+            s.innerHTML = '<div>' + html + '</div>';
+            if(obj.length==0) //只有一筆代表查不到資料
+            s.innerHTML = '<div> 查無資料 </div>';
+        }
+    }
+	
+    var url = "https://script.google.com/macros/s/AKfycbx3eNggDs9I3_InPK_OvBYBCYztwZAM6uxYvoNwRRlsd9FGfwYX/exec";
+		if(uid != null && uid != '') { url += '&uid=' + name;}
+		if(sku != null && sku != '' ) { url += '&sku=' + sku;}
+		if(ornum != null && ornum != '') { url += '&ornum=' + ornum;}
+		
+        xmlhttp.open("get",url,true);
+        xmlhttp.send();
+}
+
+
+function out_work_update(type,key) { //出貨狀態更新
+
+	var xmlhttp;
+        
+	if (window.XMLHttpRequest) { xmlhttp=new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
+    else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
+    
+	xmlhttp.onreadystatechange=function()
+          {
+                  if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+                  {
+					  alert('出貨狀態異動完成');
+				  }
+          }
+    var url="https://script.google.com/macros/s/AKfycbwPDH_BNY0qLxmm9KGfPdKN45udSbU4BYys7Lf5cYuRJkPrPFA/exec";
+		url += '?type=' + type;
+		url += '&key=' + key;
+        xmlhttp.open("get",url,true);
+		console.log(url);
         xmlhttp.send();
 }
 /* --- admin_出貨作業 --- (e) */
