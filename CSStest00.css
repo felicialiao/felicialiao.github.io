@@ -320,8 +320,8 @@ input[type="checkbox"] {
 
 .out_list {
     display:flex;
-    flex-direction:column;
-    align-items: flex-end;
+    flex-direction:row;
+    align-items: center;
     justify-content: center;
     line-height:60px;
 }

@@ -20,6 +20,8 @@ if (uname == "admin" || uname == "我" ) //admin設定
 	getlist('order_uid_list',0,null,null,null) ;
 	getlist('order_sku_list',1,null,null,null) ;
 	getlist('order_num_list',2,null,null,null) ;
+	getinlist('in_sku_list','s');
+	getinlist('in_ven_list','v');
 } 
 
 skuDropDown(startdateId.value,enddateId.value,2,'sku'); //商品下拉選單
@@ -618,6 +620,7 @@ function getContent(span_name,uid,sku,ornum)
 					html += '</table>';
 					html += '<input type="button" value="出貨" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
 					html += '<input type="button" value="收款" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
+					html += '<input type="button" value="完成訂單" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
 					html += '<hr>';
 					key = '';
 				} //表尾
@@ -631,7 +634,8 @@ function getContent(span_name,uid,sku,ornum)
 				key += obj[i].data[4] + '_' + obj[i].data[5] + ';' ;
 				
 				for(j=0;j<obj[i].data.length;j++) { //col 
-					if(j==8) { html+= '<td>$'+obj[i].data[j]+'</td>';	total += obj[i].data[j];}
+					if(j>=2 && j<=4) {html+= '<td>'+obj[i].data[j].substr(0, 10)+'</td>';}
+					else if(j==8) { html+= '<td>$'+obj[i].data[j]+'</td>';	total += obj[i].data[j];}
 					else {html+= '<td>'+obj[i].data[j]+'</td>';	}
 				}
                 html  += '</tr>';  
@@ -668,7 +672,8 @@ function out_work_update(type,key) { //出貨狀態更新
           {
                   if (xmlhttp.readyState==4 && xmlhttp.status==200)      
                   {
-					  alert('出貨狀態異動完成');
+					  if(confirm('是否要異動出貨狀態')) {
+					  alert('出貨狀態異動完成');}
 				  }
           }
     var url="https://script.google.com/macros/s/AKfycbwPDH_BNY0qLxmm9KGfPdKN45udSbU4BYys7Lf5cYuRJkPrPFA/exec";
@@ -679,6 +684,129 @@ function out_work_update(type,key) { //出貨狀態更新
         xmlhttp.send();
 }
 /* --- admin_出貨作業 --- (e) */
+
+
+
+/* --- admin_進貨作業 --- (s) */
+function work_in() {
+	document.getElementById("adminbody").innerHTML = '';
+	document.getElementById("adminbody").innerHTML = document.getElementById("work_in_list").innerHTML;
+}
+
+
+// v:廠商 s:商品
+function getinlist(list_name,target) 
+{
+	let xmlhttp;
+
+    if (window.XMLHttpRequest) { xmlhttp =new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
+    else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
+        
+	xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+        {
+            var result=xmlhttp.responseText;
+            var obj = JSON.parse(result,dateReviver);//解析json字串為json物件形式		
+			
+			let s = document.getElementById(list_name);
+			
+            for (var i = 0; i < obj.length; i ++ ) 
+			{	
+				let options =  document.createElement('option');
+				options.value = obj[i].data;
+				s.appendChild(options);
+            }
+        }
+    }
+    var url = "https://script.google.com/macros/s/AKfycbxGoMcJnJYUGEvQmeIL5iKFGnq1s8emyAXyXIfAxOTZZ7VKSo7C/exec";
+		url += '?target=' + target;
+		
+        xmlhttp.open("get",url,true);
+        xmlhttp.send();
+}
+
+function getContent_in(span_name,ven,sku) 
+{
+	let xmlhttp;
+
+    if (window.XMLHttpRequest) { xmlhttp =new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
+    else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
+        
+	xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+        {
+            var result=xmlhttp.responseText;
+            var obj = JSON.parse(result,dateReviver);//解析json字串為json物件形式		
+			
+			let s = document.getElementById(span_name);
+			
+			let html = '<hr> <table class="outtable">';
+			// let header = '<tr>';
+			// let total = 0;
+			// let footer = '<tfoot> <tr> <td colspan=8 style="text-align:left;">Total</td> <td>$';
+			// let key = '';
+                     
+			// 表頭		 
+			// for(j=0;j<obj[0].data.length;j++) { header += '<th>'+obj[0].data[j]+'</th>'; }  
+			// header += '</tr>';
+			
+			for (var i = 0; i < obj.length; i ++ ) { //row
+				html += '<tr>';						
+				// key += obj[i].data[4] + '_' + obj[i].data[5] + ';' ;
+				
+				for(j=0;j<obj[i].data.length;j++) { //col 
+					if(i==0) { html+= '<th>'+obj[i].data[j]+'</th>'; }
+					else if(j==0 || j==9) {html+= '<td>'+obj[i].data[j].substr(0, 10)+'</td>';}
+					else {html+= '<td>'+obj[i].data[j]+'</td>';}
+				}
+                html  += '</tr>';  
+            }
+            // html += footer + total +'</td> </tr> </tfoot>'; 
+			// html +='</table>'; 
+			// html += '<input type="button" value="出貨" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
+			// html += '<input type="button" value="收款" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
+			
+            s.innerHTML = '<div>' + html + '</div>';
+            if(obj.length==0) //只有一筆代表查不到資料
+            s.innerHTML = '<div> 查無資料 </div>';
+        }
+    }
+	
+    var url = "https://script.google.com/macros/s/AKfycbxXnUe8maUEr6x-bWMiQPfJoqU3WBR0ezuBXvnk02AljYrdXDuJ/exec?";
+		if(ven != null && ven != '') { url += '&ven=' + ven;}
+		if(sku != null && sku != '' ) { url += '&sku=' + sku;}
+		
+        xmlhttp.open("get",url,true);
+        xmlhttp.send();
+}
+
+
+// function out_work_update(type,key) { //出貨狀態更新
+
+	// var xmlhttp;
+        
+	// if (window.XMLHttpRequest) { xmlhttp=new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
+    // else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
+    
+	// xmlhttp.onreadystatechange=function()
+          // {
+                  // if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+                  // {
+					  // if(confirm('是否要異動出貨狀態')) {
+					  // alert('出貨狀態異動完成');} else {break;}
+				  // }
+          // }
+    // var url="https://script.google.com/macros/s/AKfycbwPDH_BNY0qLxmm9KGfPdKN45udSbU4BYys7Lf5cYuRJkPrPFA/exec";
+		// url += '?type=' + type;
+		// url += '&key=' + key;
+        // xmlhttp.open("get",url,true);
+		// console.log(url);
+        // xmlhttp.send();
+// }
+/* --- admin_進貨作業 --- (e) */
+
 
 
 /* --- Line Notify 測試 --- (s) */

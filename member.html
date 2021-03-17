@@ -170,7 +170,7 @@
 			<input type="button" id="read_out" value="出貨申請查詢" onclick="read_out()">
 			<input type="button" id="order_work" value="訂單登記" onclick="order_work()">
 			<input type="button" id="" value="進貨查詢" onclick="admin_menu()">
-			<input type="button" id="" value="到貨作業" onclick="admin_menu()">
+			<input type="button" id="" value="到貨作業" onclick="work_in()">
 			<input type="button" id="" value="出貨作業" onclick="work_out()">
 		</menu>
 		<hr>
@@ -192,7 +192,20 @@
 			</div>
 		</div>  
 		
-		<div id="in_list" class="bodyHide">  </div>  <!-- 進貨查詢 -->
+		<div id="work_in_list" class="bodyHide"> <!-- 進貨查詢 -->
+			<div>
+				<form class="in_list">
+					<label> 商品 : <input id='in_sku' list="in_sku_list"> </label>
+					<label> 廠商 : <input id='in_ven' list="in_ven_list"> </label>
+				</form>
+				<div><input type="button" value="確認" onclick="getContent_in('in_content',in_sku.value,in_ven.value)"/></div>
+				<datalist id="in_sku_list"></datalist>
+				<datalist id="in_ven_list"></datalist>
+				
+				<span id="in_content"> </span>
+			</div>
+		</div>	
+		
 		
 		<div id="write_out_list" class="bodyHide"> <!-- 出貨作業 -->
 			<div>
@@ -200,11 +213,12 @@
 				<label> 姓名 : <input id='out_list_uid' list="order_uid_list" onchange="getlist('order_sku_list',1,this.value,null,null); getlist('order_num_list',2,this.value,null,null);"> </label>
 				<label> 單號 : <input id='out_list_num' list="order_num_list" onchange="getlist('order_uid_list',0,null,null,this.value); getlist('order_sku_list',1,null,null,this.value);"> </label>
 				<label> 商品 : <input id='out_list_sku' list="order_sku_list" onchange="getlist('order_uid_list',0,null,this.value,null); getlist('order_num_list',2,null,this.value,null);"> </label>
-				<input type="button" value="確認" onclick="getContent('out_work_content',out_list_uid.value,out_list_sku.value,out_list_num.value)"/>
-				<datalist id="order_uid_list"></datalist>
-				<datalist id="order_num_list"></datalist>
-				<datalist id="order_sku_list"></datalist>
 			</form>
+			<div><input type="button" value="確認" onclick="getContent('out_work_content',out_list_uid.value,out_list_sku.value,out_list_num.value)"/></div>
+			<datalist id="order_uid_list"></datalist>
+			<datalist id="order_num_list"></datalist>
+			<datalist id="order_sku_list"></datalist>
+			
 			<span id="out_work_content"> </span>
 			</div>
 		</div>  
