@@ -364,7 +364,7 @@ function admin_menu()
 {
 	document.getElementById("read_out_list").setAttribute("calss","bodyHide");
 	document.getElementById("admin_order_list").setAttribute("calss","bodyHide");
-	document.getElementById("in_list").setAttribute("calss","bodyHide");
+	document.getElementById("work_in_list").setAttribute("calss","bodyHide");
 	document.getElementById("write_out_list").setAttribute("calss","bodyHide");
 }
 /* --- admin_menu --- (e) */
@@ -449,7 +449,7 @@ function out_status(btn_name,out_num) //出貨訂單狀態異動
 
 
 /* --- 訂單登記 --- (s) */
-function order_work() 
+function work_orderout() 
 {
 	document.getElementById("adminbody").innerHTML = '';
 	document.getElementById("adminbody").innerHTML = document.getElementById("admin_order_list").innerHTML;
@@ -652,7 +652,7 @@ function getContent(span_name,uid,sku,ornum)
     }
 	
     var url = "https://script.google.com/macros/s/AKfycbx3eNggDs9I3_InPK_OvBYBCYztwZAM6uxYvoNwRRlsd9FGfwYX/exec";
-		if(uid != null && uid != '') { url += '&uid=' + name;}
+		if(uid != null && uid != '') { url += '&uid=' + uid;}
 		if(sku != null && sku != '' ) { url += '&sku=' + sku;}
 		if(ornum != null && ornum != '') { url += '&ornum=' + ornum;}
 		
@@ -672,8 +672,7 @@ function out_work_update(type,key) { //出貨狀態更新
           {
                   if (xmlhttp.readyState==4 && xmlhttp.status==200)      
                   {
-					  if(confirm('是否要異動出貨狀態')) {
-					  alert('出貨狀態異動完成');}
+					alert('出貨狀態異動完成');
 				  }
           }
     var url="https://script.google.com/macros/s/AKfycbwPDH_BNY0qLxmm9KGfPdKN45udSbU4BYys7Lf5cYuRJkPrPFA/exec";
@@ -681,7 +680,7 @@ function out_work_update(type,key) { //出貨狀態更新
 		url += '&key=' + key;
         xmlhttp.open("get",url,true);
 		console.log(url);
-        xmlhttp.send();
+        if(confirm('是否要異動出貨狀態')) {xmlhttp.send();}
 }
 /* --- admin_出貨作業 --- (e) */
 
@@ -726,8 +725,10 @@ function getinlist(list_name,target)
         xmlhttp.send();
 }
 
-function getContent_in(span_name,ven,sku) 
+function getContent_in(span_name) 
 {
+	let ven = document.getElementById('in_ven').value;
+	let sku = document.getElementById('in_sku').value;
 	let xmlhttp;
 
     if (window.XMLHttpRequest) { xmlhttp =new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -743,30 +744,28 @@ function getContent_in(span_name,ven,sku)
 			let s = document.getElementById(span_name);
 			
 			let html = '<hr> <table class="outtable">';
-			// let header = '<tr>';
-			// let total = 0;
-			// let footer = '<tfoot> <tr> <td colspan=8 style="text-align:left;">Total</td> <td>$';
-			// let key = '';
-                     
-			// 表頭		 
-			// for(j=0;j<obj[0].data.length;j++) { header += '<th>'+obj[0].data[j]+'</th>'; }  
-			// header += '</tr>';
+			
+			let ouput_col = [17,18,0,1,5,7,9,10,15];
+			console.log(ouput_col);
 			
 			for (var i = 0; i < obj.length; i ++ ) { //row
 				html += '<tr>';						
-				// key += obj[i].data[4] + '_' + obj[i].data[5] + ';' ;
 				
-				for(j=0;j<obj[i].data.length;j++) { //col 
+				for(k=0;k<ouput_col.length;k++) { //col 
+					let j = ouput_col[k];
+					console.log(j);
 					if(i==0) { html+= '<th>'+obj[i].data[j]+'</th>'; }
 					else if(j==0 || j==9) {html+= '<td>'+obj[i].data[j].substr(0, 10)+'</td>';}
+					else if(j==7) {html+= '<td>$'+obj[i].data[j]+'</td>';}
+					else if(j==18) { html+= '<td> <input type="checkbox" name="outcheck" value="'+obj[i].data[j]+'"></td>'; }
 					else {html+= '<td>'+obj[i].data[j]+'</td>';}
 				}
                 html  += '</tr>';  
             }
-            // html += footer + total +'</td> </tr> </tfoot>'; 
-			// html +='</table>'; 
-			// html += '<input type="button" value="出貨" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
-			// html += '<input type="button" value="收款" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
+
+			html += '<input type="button" value="全數到貨" onclick="in_work_update(\'貨\')">'; 
+			html += '<input type="button" value="全額付款" onclick="in_work_update(\'錢\')">'; 
+			html += '<input type="button" value="完成到貨" onclick="in_work_update(\'完成\')">';
 			
             s.innerHTML = '<div>' + html + '</div>';
             if(obj.length==0) //只有一筆代表查不到資料
@@ -777,35 +776,130 @@ function getContent_in(span_name,ven,sku)
     var url = "https://script.google.com/macros/s/AKfycbxXnUe8maUEr6x-bWMiQPfJoqU3WBR0ezuBXvnk02AljYrdXDuJ/exec?";
 		if(ven != null && ven != '') { url += '&ven=' + ven;}
 		if(sku != null && sku != '' ) { url += '&sku=' + sku;}
-		
+		console.log(url);
         xmlhttp.open("get",url,true);
         xmlhttp.send();
 }
 
 
-// function out_work_update(type,key) { //出貨狀態更新
+function in_work_update(type) { //進貨狀態更新
 
-	// var xmlhttp;
+    var obj = document.getElementsByName('outcheck');
+    var selected=[];
+	var data = [];
+    for (var i=0; i<obj.length; i++) {
+        if (obj[i].checked) 
+		{
+			selected = [];
+			selected[0] = obj[i].value ; //key
+			data.push(selected);
+        }
+    }
+
+	var xmlhttp;
         
-	// if (window.XMLHttpRequest) { xmlhttp=new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
-    // else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
+	if (window.XMLHttpRequest) { xmlhttp=new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
+    else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
     
-	// xmlhttp.onreadystatechange=function()
-          // {
-                  // if (xmlhttp.readyState==4 && xmlhttp.status==200)      
-                  // {
-					  // if(confirm('是否要異動出貨狀態')) {
-					  // alert('出貨狀態異動完成');} else {break;}
-				  // }
-          // }
-    // var url="https://script.google.com/macros/s/AKfycbwPDH_BNY0qLxmm9KGfPdKN45udSbU4BYys7Lf5cYuRJkPrPFA/exec";
-		// url += '?type=' + type;
-		// url += '&key=' + key;
-        // xmlhttp.open("get",url,true);
-		// console.log(url);
-        // xmlhttp.send();
-// }
+	xmlhttp.onreadystatechange=function()
+          {
+                  if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+                  {
+					  alert('進貨狀態異動完成');
+				  }
+          }
+    var url="https://script.google.com/macros/s/AKfycbw8M-42nbQK4R5cmt28-y003DChvXP212VxpFuS2P4vYocU2l9c/exec";
+		url += '?type=' + type;
+		url += '&key=' + data;
+        xmlhttp.open("get",url,true);
+		if(confirm('是否要異動進貨狀態')) {xmlhttp.send();}
+}
 /* --- admin_進貨作業 --- (e) */
+
+
+
+/* --- 訂貨作業 --- (s) */
+function work_order() 
+{
+	var xmlhttp;
+        
+	if (window.XMLHttpRequest) { xmlhttp=new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
+    else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
+    
+	xmlhttp.onreadystatechange=function()
+          {
+                  if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+                  {
+                        var result = xmlhttp.responseText;
+                        var obj = JSON.parse(result,dateReviver);//解析json字串為json物件形式
+                        
+						let html = '<input type="button" value="訂貨" onclick="work_TBOrder()">'; 
+                        html += '<table class="outtable">';
+                        
+						for (var i = 0; i < obj.length; i ++ ) { //row
+							html += '<tr>';						
+							
+							for(j=0;j<obj[i].data.length;j++) { //col 
+								if(i==0) { html+= '<th>'+obj[i].data[j]+'</th>'; }
+								else if(obj[i].data[4] != '') { 
+								 if(j==4) 
+								 {html+= '<th> <input type="checkbox" name="ordercheck" value="'+obj[i].data[j]+'"></th>';}
+								 else {html += '<th></th>';}
+								}
+								else {html+= '<td>'+obj[i].data[j]+'</td>';}
+							}
+							html  += '</tr>';  
+						}
+                        document.getElementById("TBOrder_content").innerHTML = '<div>' + html + '</div>';
+                        if(obj.length==0) //只有一筆代表查不到資料
+                        document.getElementById("TBOrder_content").innerHTML = '<div> 查無資料 </div>';
+						
+						document.getElementById("adminbody").innerHTML = '';
+						document.getElementById("adminbody").innerHTML = document.getElementById("TBOrder_content").innerHTML;
+                  }
+
+          }
+    var url="https://script.google.com/macros/s/AKfycby_i0nzhrpo0f8DKJmpa5B0C6tdjUnPVzrQLZ4yLppRlKHV_Ck/exec";
+        xmlhttp.open("get",url,true);
+        xmlhttp.send();
+}
+
+function work_TBOrder() { //進貨狀態更新
+	
+	let type = "訂";
+	
+    var obj = document.getElementsByName('ordercheck');
+    var selected=[];
+	var data = [];
+    for (var i=0; i<obj.length; i++) {
+        if (obj[i].checked) 
+		{
+			selected = [];
+			selected[0] = obj[i].value ; //key
+			data.push(selected);
+        }
+    }
+
+	var xmlhttp;
+        
+	if (window.XMLHttpRequest) { xmlhttp=new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
+    else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
+    
+	xmlhttp.onreadystatechange=function()
+          {
+                  if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+                  {
+					  alert('訂貨完成');
+				  }
+          }
+    var url="https://script.google.com/macros/s/AKfycbw8M-42nbQK4R5cmt28-y003DChvXP212VxpFuS2P4vYocU2l9c/exec";
+		url += '?type=' + type;
+		url += '&key=' + data;
+        xmlhttp.open("get",url,true);
+		if(confirm('是否要訂貨')) {xmlhttp.send();}
+}
+
+/* --- 訂貨作業 --- (e) */
 
 
 

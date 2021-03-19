@@ -168,8 +168,8 @@
 		
 		<menu style="display:flex;">
 			<input type="button" id="read_out" value="出貨申請查詢" onclick="read_out()">
-			<input type="button" id="order_work" value="訂單登記" onclick="order_work()">
-			<input type="button" id="" value="進貨查詢" onclick="admin_menu()">
+			<input type="button" id="order_work" value="訂單出貨申請" onclick="work_orderout()">
+			<input type="button" id="" value="訂貨作業" onclick="work_order()">
 			<input type="button" id="" value="到貨作業" onclick="work_in()">
 			<input type="button" id="" value="出貨作業" onclick="work_out()">
 		</menu>
@@ -177,7 +177,14 @@
 		
 		<div id="adminbody"> </div>
 		<div id="read_out_list" class="bodyHide"> <div></div> </div>  <!-- 出貨申請查詢 -->
-		<div id="admin_order_list" class="bodyHide"> <!-- 訂單登記 -->
+		
+		<div id="work_order_list" class="bodyHide"> <!-- 訂貨作業 -->
+			<div>				
+				<span id="TBOrder_content"> </span>
+			</div>
+		</div>	
+		
+		<div id="admin_order_list" class="bodyHide"> <!-- 訂單出貨申請 -->
 			<div>
 				<form>
 					<label style="display:flex;">
@@ -192,13 +199,13 @@
 			</div>
 		</div>  
 		
-		<div id="work_in_list" class="bodyHide"> <!-- 進貨查詢 -->
+		<div id="work_in_list" class="bodyHide"> <!-- 到貨作業 -->
 			<div>
 				<form class="in_list">
 					<label> 商品 : <input id='in_sku' list="in_sku_list"> </label>
 					<label> 廠商 : <input id='in_ven' list="in_ven_list"> </label>
 				</form>
-				<div><input type="button" value="確認" onclick="getContent_in('in_content',in_sku.value,in_ven.value)"/></div>
+				<div><input type="button" value="確認" onclick="getContent_in('in_content')"></div>
 				<datalist id="in_sku_list"></datalist>
 				<datalist id="in_ven_list"></datalist>
 				
