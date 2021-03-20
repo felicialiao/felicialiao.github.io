@@ -843,8 +843,9 @@ function work_order()
 								if(i==0) { html+= '<th>'+obj[i].data[j]+'</th>'; }
 								else if(obj[i].data[4] != '') { 
 								 if(j==4) 
-								 {html+= '<th> <input type="checkbox" name="ordercheck" value="'+obj[i].data[j]+'"></th>';}
-								 else {html += '<th></th>';}
+								 {html+= '<td> <input type="checkbox" name="ordercheck" value="'+obj[i].data[j]+'"></td>';}
+								 else if(j==1)  {html += '<th>' +obj[i].data[j]+ '</th>';}
+								 else { html += '<th></th>';}
 								}
 								else {html+= '<td>'+obj[i].data[j]+'</td>';}
 							}
