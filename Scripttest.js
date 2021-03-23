@@ -965,6 +965,7 @@ function work_TBOrder() { //進貨狀態更新
           {
                   if (xmlhttp.readyState==4 && xmlhttp.status==200)      
                   {
+					  work_order();
 					  alert('訂貨完成');
 				  }
           }
@@ -974,7 +975,7 @@ function work_TBOrder() { //進貨狀態更新
         xmlhttp.open("get",url,true);
 		let msg = '是否要訂貨\n\n' + data.join('\n');
 		console.log(msg);
-		if(confirm(msg)) {xmlhttp.send(); work_order();}
+		if(confirm(msg)) {xmlhttp.send();}
 }
 
 /* --- 訂貨作業 --- (e) */
