@@ -391,7 +391,10 @@ function read_out_load()
                         for (var i = 0; i < obj.length; i ++ ) { //row
                             html += '<hr>';    
                             html += obj[i].data[1];
-							html += '<p class="p"> 更新時間 : ' + obj[i].data[2] + '</p>';
+							html += '<p class="p"> 出貨方式 : ' + obj[i].data[3] + '</p>';
+							html += '<p class="p"> 申請時間 : ' + obj[i].data[2] + '</p>';
+							if(obj[i].data[4]!='') {html += '<p class="p"> 出貨時間 : ' + obj[i].data[4] + '</p>';}
+							if(obj[i].data[5]!='') {html += '<p class="p"> 出貨時間 : ' + obj[i].data[5] + '</p>';}
 							
 							let temp = "'" + obj[i].data[0] + "'";
 							
@@ -644,6 +647,7 @@ function getContent(span_name,uid,sku,ornum)
 			html +='</table>'; 
 			html += '<input type="button" value="出貨" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
 			html += '<input type="button" value="收款" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
+			html += '<input type="button" value="完成訂單" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
 			
             s.innerHTML = '<div>' + html + '</div>';
             if(obj.length==0) //只有一筆代表查不到資料
@@ -658,6 +662,74 @@ function getContent(span_name,uid,sku,ornum)
 		
         xmlhttp.open("get",url,true);
         xmlhttp.send();
+}
+
+function getContent_HF(span_name) 
+{
+	let xmlhttp;
+
+    if (window.XMLHttpRequest) { xmlhttp =new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
+    else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
+        
+	xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+        {
+            var result=xmlhttp.responseText;
+            var obj = JSON.parse(result,dateReviver);//解析json字串為json物件形式		
+			
+			let s = document.getElementById(span_name);
+			
+			let html = '<hr> <table class="outtable">';
+			let header = '<tr>';
+			let key = '';
+			let total = 0;
+                     
+			//表頭		 
+			for(j=0;j<obj[0].data.length;j++) { html += '<th>'+obj[0].data[j]+'</th>'; }  
+			html += '</tr>';
+			
+			for (var i = 1; i < obj.length; i ++ ) { //row
+                html += '<tr>';
+							
+				if(obj[i].data[2]!='') {key += obj[i].data[2] + '_' + obj[i].data[3] + ';' ;}
+				
+				for(j=0;j<obj[i].data.length;j++) { //col 
+					if(obj[i].data[2]=='' && (j==6 || j==7)) 
+					{html+= '<td style="background-color:#F3F6FB; border-block: 3px solid #455e8b ;">$'+obj[i].data[j]+'</td>';}
+					else if(obj[i].data[2]=='') 
+					{html+= '<td style="background-color:#F3F6FB; border-block: 3px solid #455e8b ;">'+obj[i].data[j]+'</td>';}
+					else if(j==6) { html+= '<td>$'+obj[i].data[j]+'</td>';	total += parseInt(obj[i].data[j]);}
+					else if(j==7) { html+= '<td>$'+obj[i].data[j]+'</td>';}
+					else {html+= '<td>'+obj[i].data[j]+'</td>';	}
+				}
+                html  += '</tr>';  
+            }
+			
+			html +='<tfoot> <tr> <td colspan='+(obj[0].data.length-2)+' style="text-align:right;">應收金額</td> <td>$'; 
+			html +=  Math.round(total*0.9) + '</td><td></td> </tr> </tfoot>';
+			html +='<tfoot> <tr> <td colspan='+(obj[0].data.length-2)+' style="text-align:right;">快樂角服務費</td> <td>$'; 
+			html +=  Math.round(total*0.1) + '</td><td></td> </tr> </tfoot>';
+			
+			html +='</table>'; 
+			
+			let in_key = "快樂角服務費_" + Math.round(total*0.1);
+			
+			html += '<input type="button" value="出貨" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
+			html += '<input type="button" value="收款" onclick="out_work_update(this.value,\'' + key + '\'); in_work_update(\'快\',\''+in_key+'\'); "/>'; 
+			html += '<input type="button" value="完成訂單" onclick="out_work_update(this.value,\'' + key + '\'); in_work_update(\'快\',\''+in_key+'\');"/>'; 
+			html += '<hr>';
+			
+            s.innerHTML = '<div>' + html + '</div>';
+            if(obj.length==0) //只有一筆代表查不到資料
+            s.innerHTML = '<div> 查無資料 </div>';
+        }
+    }
+	
+    var url = "https://script.google.com/macros/s/AKfycbzdx3DMEYXC8igSLFZWxIYaa_xR2S0LVWWFen8hGVJB2J8yiaY/exec";
+        xmlhttp.open("get",url,true);
+        xmlhttp.send();
+
 }
 
 
@@ -782,19 +854,21 @@ function getContent_in(span_name)
 }
 
 
-function in_work_update(type) { //進貨狀態更新
-
-    var obj = document.getElementsByName('outcheck');
-    var selected=[];
-	var data = [];
-    for (var i=0; i<obj.length; i++) {
-        if (obj[i].checked) 
-		{
-			selected = [];
-			selected[0] = obj[i].value ; //key
-			data.push(selected);
-        }
-    }
+function in_work_update(type,key) { //進貨狀態更新
+	
+	if(type!="快"){
+		var obj = document.getElementsByName('outcheck');
+		var selected=[];
+		var data = [];
+		for (var i=0; i<obj.length; i++) {
+			if (obj[i].checked) 
+			{
+				selected = [];
+				selected[0] = obj[i].value ; //key
+				data.push(selected);
+			}
+		}
+	} else {var data=[]; data.push(key);}
 
 	var xmlhttp;
         
@@ -811,6 +885,7 @@ function in_work_update(type) { //進貨狀態更新
     var url="https://script.google.com/macros/s/AKfycbw8M-42nbQK4R5cmt28-y003DChvXP212VxpFuS2P4vYocU2l9c/exec";
 		url += '?type=' + type;
 		url += '&key=' + data;
+		console.log(url);
         xmlhttp.open("get",url,true);
 		if(confirm('是否要異動進貨狀態')) {xmlhttp.send();}
 }
@@ -843,7 +918,7 @@ function work_order()
 								if(i==0) { html+= '<th>'+obj[i].data[j]+'</th>'; }
 								else if(obj[i].data[4] != '') { 
 								 if(j==4) 
-								 {html+= '<td> <input type="checkbox" name="ordercheck" value="'+obj[i].data[j]+'"></td>';}
+								 {html+= '<th> <input type="checkbox" name="ordercheck" value="'+obj[i].data[j]+'"></th>';}
 								 else if(j==1)  {html += '<th>' +obj[i].data[j]+ '</th>';}
 								 else { html += '<th></th>';}
 								}
@@ -897,7 +972,9 @@ function work_TBOrder() { //進貨狀態更新
 		url += '?type=' + type;
 		url += '&key=' + data;
         xmlhttp.open("get",url,true);
-		if(confirm('是否要訂貨')) {xmlhttp.send();}
+		let msg = '是否要訂貨\n\n' + data.join('\n');
+		console.log(msg);
+		if(confirm(msg)) {xmlhttp.send(); work_order();}
 }
 
 /* --- 訂貨作業 --- (e) */

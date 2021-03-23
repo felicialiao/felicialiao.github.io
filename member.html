@@ -167,8 +167,8 @@
 		<h2>管理員</h2>
 		
 		<menu style="display:flex;">
-			<input type="button" id="read_out" value="出貨申請查詢" onclick="read_out()">
-			<input type="button" id="order_work" value="訂單出貨申請" onclick="work_orderout()">
+			<input type="button" id="read_out" value="查詢出貨申請" onclick="read_out()">
+			<input type="button" id="order_work" value="申請訂單出貨" onclick="work_orderout()">
 			<input type="button" id="" value="訂貨作業" onclick="work_order()">
 			<input type="button" id="" value="到貨作業" onclick="work_in()">
 			<input type="button" id="" value="出貨作業" onclick="work_out()">
@@ -221,7 +221,10 @@
 				<label> 單號 : <input id='out_list_num' list="order_num_list" onchange="getlist('order_uid_list',0,null,null,this.value); getlist('order_sku_list',1,null,null,this.value);"> </label>
 				<label> 商品 : <input id='out_list_sku' list="order_sku_list" onchange="getlist('order_uid_list',0,null,this.value,null); getlist('order_num_list',2,null,this.value,null);"> </label>
 			</form>
-			<div><input type="button" value="確認" onclick="getContent('out_work_content',out_list_uid.value,out_list_sku.value,out_list_num.value)"/></div>
+			<div>
+				<input type="button" value="確認" onclick=								"getContent('out_work_content',out_list_uid.value,out_list_sku.value,out_list_num.value)"/>
+				<input type="button" value="快樂角出貨" onclick="getContent_HF('out_work_content')"/>
+			</div>
 			<datalist id="order_uid_list"></datalist>
 			<datalist id="order_num_list"></datalist>
 			<datalist id="order_sku_list"></datalist>
