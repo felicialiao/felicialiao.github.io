@@ -222,9 +222,10 @@
 				<label> 商品 : <input id='out_list_sku' list="order_sku_list" onchange="getlist('order_uid_list',0,null,this.value,null); getlist('order_num_list',2,null,this.value,null);"> </label>
 			</form>
 			<div>
-				<input type="button" value="確認" onclick=								"getContent('out_work_content',out_list_uid.value,out_list_sku.value,out_list_num.value)"/>
+				<input type="button" value="確認" onclick="getContent('out_work_content')"/>
 				<input type="button" value="快樂角出貨" onclick="getContent_HF('out_work_content')"/>
 			</div>
+			
 			<datalist id="order_uid_list"></datalist>
 			<datalist id="order_num_list"></datalist>
 			<datalist id="order_sku_list"></datalist>

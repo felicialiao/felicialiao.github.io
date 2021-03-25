@@ -529,7 +529,7 @@ function admin_order(uid)
 {
 	document.getElementById("admin_order_ID").innerHTML = '';
 	uname_getID(decodeURI(uid),'admin_order_ID');
-	showHint(startdateId.value,enddateId.value,'all','到',decodeURI(uid),'admin_order');
+	showHint(startdateId.value,enddateId.value,'all','all',decodeURI(uid),'admin_order');
 }
 /* --- admin_查詢訂單 --- (e) */
 
@@ -589,7 +589,7 @@ function getlist(list_name,targetnum,name,sku,ornum)
         xmlhttp.send();
 }
 
-function getContent(span_name,uid,sku,ornum) 
+function getContent(span_name) 
 {
 	let xmlhttp;
 
@@ -654,12 +654,16 @@ function getContent(span_name,uid,sku,ornum)
             s.innerHTML = '<div> 查無資料 </div>';
         }
     }
-	
-    var url = "https://script.google.com/macros/s/AKfycbx3eNggDs9I3_InPK_OvBYBCYztwZAM6uxYvoNwRRlsd9FGfwYX/exec";
+
+    var url = "https://script.google.com/macros/s/AKfycbx3eNggDs9I3_InPK_OvBYBCYztwZAM6uxYvoNwRRlsd9FGfwYX/exec?";
+	let uid = document.getElementById('out_list_uid').value;
+	let sku = document.getElementById('out_list_sku').value;
+	let ornum = document.getElementById('out_list_num').value;
 		if(uid != null && uid != '') { url += '&uid=' + uid;}
 		if(sku != null && sku != '' ) { url += '&sku=' + sku;}
 		if(ornum != null && ornum != '') { url += '&ornum=' + ornum;}
-		
+		console.log(uid + sku + ornum);
+		console.log(url);
         xmlhttp.open("get",url,true);
         xmlhttp.send();
 }
@@ -825,7 +829,6 @@ function getContent_in(span_name)
 				
 				for(k=0;k<ouput_col.length;k++) { //col 
 					let j = ouput_col[k];
-					console.log(j);
 					if(i==0) { html+= '<th>'+obj[i].data[j]+'</th>'; }
 					else if(j==0 || j==9) {html+= '<td>'+obj[i].data[j].substr(0, 10)+'</td>';}
 					else if(j==7) {html+= '<td>$'+obj[i].data[j]+'</td>';}
