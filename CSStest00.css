@@ -285,15 +285,40 @@ input[type="checkbox"] {
   font-weight: 900;
 }
 
-.outtable tfoot {
+.outtable:not(#happyfoot) tfoot {
 	border-top: 2px solid #455e8b !important;
 	background: #d9e2f3;
 	font-weight: 900; 
 }
 
+#happyfoot.outtable tfoot {
+	font-weight: 900;
+	display: none;
+}
+
 .outtable tr > #tdname:nth-child(1) {
     border-left: 1px solid #cab8b9;
 	border-right: 1px solid #cab8b9;
+}
+
+.outtable.outformat tr > *:nth-child(4),
+.outtable.outformat tr > *:nth-child(8) {
+    display: none;
+}
+
+#happyfoot.outtable.outformat tfoot {
+    display:table-row-group;
+}
+
+.table_lv2 {
+	background-color:#F3F6FB;
+	border-block: 2px solid #455e8b !important;
+}
+
+#happyfoot.outtable tr:nth-last-of-type(1) .table_lv2 {
+	background-color:#d9e2f3;
+	font-weight: 900;
+	border-top: 3px double #455e8b !important;
 }
 
 .grid-container {

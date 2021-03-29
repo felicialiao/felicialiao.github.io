@@ -637,7 +637,8 @@ function getContent(span_name)
 				key += obj[i].data[4] + '_' + obj[i].data[5] + ';' ;
 				
 				for(j=0;j<obj[i].data.length;j++) { //col 
-					if(j>=2 && j<=4) {html+= '<td>'+obj[i].data[j].substr(0, 10)+'</td>';}
+					if(j>=2 && j<=3) {html+= '<td>'+obj[i].data[j].substr(0, 10)+'</td>';}
+					else if(j==4) {html+= '<td>'+obj[i].data[j]+'</td>';}
 					else if(j==8) { html+= '<td>$'+obj[i].data[j]+'</td>';	total += obj[i].data[j];}
 					else {html+= '<td>'+obj[i].data[j]+'</td>';	}
 				}
@@ -668,7 +669,7 @@ function getContent(span_name)
         xmlhttp.send();
 }
 
-function getContent_HF(span_name) 
+function getContent_HF(span_name) //快樂角
 {
 	let xmlhttp;
 
@@ -684,7 +685,7 @@ function getContent_HF(span_name)
 			
 			let s = document.getElementById(span_name);
 			
-			let html = '<hr> <table class="outtable">';
+			let html = '<hr> <table class="outtable" id="happyfoot">';
 			let header = '<tr>';
 			let key = '';
 			let total = 0;
@@ -700,9 +701,9 @@ function getContent_HF(span_name)
 				
 				for(j=0;j<obj[i].data.length;j++) { //col 
 					if(obj[i].data[2]=='' && (j==6 || j==7)) 
-					{html+= '<td style="background-color:#F3F6FB; border-block: 3px solid #455e8b ;">$'+obj[i].data[j]+'</td>';}
+					{html+= '<td class="table_lv2">$'+obj[i].data[j]+'</td>';}
 					else if(obj[i].data[2]=='') 
-					{html+= '<td style="background-color:#F3F6FB; border-block: 3px solid #455e8b ;">'+obj[i].data[j]+'</td>';}
+					{html+= '<td class="table_lv2">'+obj[i].data[j]+'</td>';}
 					else if(j==6) { html+= '<td>$'+obj[i].data[j]+'</td>';	total += parseInt(obj[i].data[j]);}
 					else if(j==7) { html+= '<td>$'+obj[i].data[j]+'</td>';}
 					else {html+= '<td>'+obj[i].data[j]+'</td>';	}
@@ -710,10 +711,10 @@ function getContent_HF(span_name)
                 html  += '</tr>';  
             }
 			
-			html +='<tfoot> <tr> <td colspan='+(obj[0].data.length-2)+' style="text-align:right;">應收金額</td> <td>$'; 
-			html +=  Math.round(total*0.9) + '</td><td></td> </tr> </tfoot>';
-			html +='<tfoot> <tr> <td colspan='+(obj[0].data.length-2)+' style="text-align:right;">快樂角服務費</td> <td>$'; 
-			html +=  Math.round(total*0.1) + '</td><td></td> </tr> </tfoot>';
+			html +='<tfoot> <tr> <td colspan='+(obj[0].data.length-3)+' style="text-align:right;">快樂角服務費</td> <td>$'; 
+			html +=  Math.round(total*0.1) + '</td> </tr> </tfoot>';
+			html +='<tfoot> <tr> <td colspan='+(obj[0].data.length-3)+' style="text-align:right;">應收金額</td> <td>$'; 
+			html +=  Math.round(total*0.9) + '</td> </tr> </tfoot>';
 			
 			html +='</table>'; 
 			
@@ -722,6 +723,7 @@ function getContent_HF(span_name)
 			html += '<input type="button" value="出貨" onclick="out_work_update(this.value,\'' + key + '\')"/>'; 
 			html += '<input type="button" value="收款" onclick="out_work_update(this.value,\'' + key + '\'); in_work_update(\'快\',\''+in_key+'\'); "/>'; 
 			html += '<input type="button" value="完成訂單" onclick="out_work_update(this.value,\'' + key + '\'); in_work_update(\'快\',\''+in_key+'\');"/>'; 
+			html += '<input type="button" value="發送格式" onclick="outformat(\'happyfoot\')">'; 
 			html += '<hr>';
 			
             s.innerHTML = '<div>' + html + '</div>';
@@ -734,6 +736,10 @@ function getContent_HF(span_name)
         xmlhttp.open("get",url,true);
         xmlhttp.send();
 
+}
+
+function outformat(name) {
+	document.getElementById(name).classList.toggle("outformat");
 }
 
 
