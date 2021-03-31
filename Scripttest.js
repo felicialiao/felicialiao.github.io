@@ -584,7 +584,7 @@ function getlist(list_name,targetnum,name,sku,ornum)
 		if(name != null && name != '') { url += '&uid=' + name;}
 		if(sku != null && sku != '' ) { url += '&sku=' + sku;}
 		if(ornum != null && ornum != '') { url += '&order_num=' + ornum;}
-		
+		console.log(url);
         xmlhttp.open("get",url,true);
         xmlhttp.send();
 }
@@ -691,19 +691,22 @@ function getContent_HF(span_name) //快樂角
 			let total = 0;
                      
 			//表頭		 
-			for(j=0;j<obj[0].data.length;j++) { html += '<th>'+obj[0].data[j]+'</th>'; }  
+			for(j=1;j<obj[0].data.length;j++) { html += '<th>'+obj[0].data[j]+'</th>'; }  
 			html += '</tr>';
 			
 			for (var i = 1; i < obj.length; i ++ ) { //row
                 html += '<tr>';
 							
-				if(obj[i].data[2]!='') {key += obj[i].data[2] + '_' + obj[i].data[3] + ';' ;}
+				if(obj[i].data[2]!='') {key += obj[i].data[2] + '_' + obj[i].data[3] + ';' ;} //2訂購人 3商品
 				
-				for(j=0;j<obj[i].data.length;j++) { //col 
-					if(obj[i].data[2]=='' && (j==6 || j==7)) 
+				for(j=1;j<obj[i].data.length;j++) { //col 
+					if(obj[i].data[2]=='' && (j==6 || j==7)) //6價格 7利潤 補$開頭
 					{html+= '<td class="table_lv2">$'+obj[i].data[j]+'</td>';}
-					else if(obj[i].data[2]=='') 
-					{html+= '<td class="table_lv2">'+obj[i].data[j]+'</td>';}
+					else if(obj[i].data[2]=='') // 抓小計列
+					{
+						if(j==2) {html+= '<td class="table_lv2">'+obj[i].data[0]+'</td>';}
+						else {html+= '<td class="table_lv2"></td>';}
+					}
 					else if(j==6) { html+= '<td>$'+obj[i].data[j]+'</td>';	total += parseInt(obj[i].data[j]);}
 					else if(j==7) { html+= '<td>$'+obj[i].data[j]+'</td>';}
 					else {html+= '<td>'+obj[i].data[j]+'</td>';	}
@@ -711,9 +714,9 @@ function getContent_HF(span_name) //快樂角
                 html  += '</tr>';  
             }
 			
-			html +='<tfoot> <tr> <td colspan='+(obj[0].data.length-3)+' style="text-align:right;">快樂角服務費</td> <td>$'; 
+			html +='<tfoot> <tr> <td colspan='+(obj[0].data.length-4)+' style="text-align:right;">快樂角服務費</td> <td>$'; 
 			html +=  Math.round(total*0.1) + '</td> </tr> </tfoot>';
-			html +='<tfoot> <tr> <td colspan='+(obj[0].data.length-3)+' style="text-align:right;">應收金額</td> <td>$'; 
+			html +='<tfoot> <tr> <td colspan='+(obj[0].data.length-4)+' style="text-align:right;">應收金額</td> <td>$'; 
 			html +=  Math.round(total*0.9) + '</td> </tr> </tfoot>';
 			
 			html +='</table>'; 

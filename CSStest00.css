@@ -274,7 +274,6 @@ input[type="checkbox"] {
 .outtable th, .outtable td {
   border-bottom: 1px solid #cab8b9;
   padding: 5px;
-  text-align: center;
   white-space:nowrap;
 }
 
@@ -301,13 +300,18 @@ input[type="checkbox"] {
 	border-right: 1px solid #cab8b9;
 }
 
-.outtable.outformat tr > *:nth-child(4),
-.outtable.outformat tr > *:nth-child(8) {
+.outtable.outformat tr > *:nth-child(3),
+.outtable.outformat tr > *:nth-child(7) {
     display: none;
 }
 
 #happyfoot.outtable.outformat tfoot {
     display:table-row-group;
+}
+
+#happyfoot.outtable tr> *:nth-child(6),
+#happyfoot.outtable tr> *:nth-child(7) {
+	text-align:right;
 }
 
 .table_lv2 {
