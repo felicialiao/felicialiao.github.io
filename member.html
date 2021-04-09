@@ -239,6 +239,7 @@
 		
 		<div id="keyin_order_list" class="bodyHide"> <!-- 訂單登記作業 -->
 			<div>
+			<h2> 登記訂單建立 </h2>
 				<form class="out_list">
 					<label> 平台 : 
 					<select id='keyin_plat' style="width:100px;">
@@ -258,8 +259,9 @@
 			
 			<div> <!-- 商品輸入作業 -->
 			<br><hr><br>
+			<h2> 商品清單建立 </h2>
 				<form class="out_list">
-					<label> 商品 : <input id='keyin_sku'> </label>
+					<label> 商品 : <input id='keyin_sku_sku' required> </label>
 					<label> 廠商 : <input id='keyin_ven' list="in_ven_list"> </label>
 					<label> 成本 : <input id='keyin_cost' style="
 		width: 100px;"> </label>
@@ -267,7 +269,7 @@
 		width: 100px;"> </label>
 					<label> 快樂角售價 : <input id='keyin_priceHF' style="
 		width: 100px;"> </label>
-					<div style="margin-block-start: auto;"><input type="submit" value="確認" onclick=""></div>
+					<div style="margin-block-start: auto;"><input type="submit" value="確認" onclick="keyin_sku_write(keyin_sku_sku.value,keyin_ven.value,keyin_cost.value,keyin_price.value,keyin_priceHF.value)"></div>
 				</form>
 			</div>	<!-- 商品輸入作業 -->
 		</div>	<!-- 訂單登記作業 -->

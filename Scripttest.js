@@ -1027,6 +1027,33 @@ function keyin_order_write(plat,name,sku,color,qty) {
 		if(confirm(msg)) {xmlhttp.send();}
 	
 }
+
+function keyin_sku_write(sku,ven,cost,price,priceHF) {
+	var xmlhttp;
+        
+	if (window.XMLHttpRequest) { xmlhttp=new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
+    else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
+    
+	xmlhttp.onreadystatechange=function()
+          {
+                  if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+                  {
+					  alert('完成商品建立');
+				  }
+          }
+    var url="https://script.google.com/macros/s/AKfycbzJzUNsWBfZF79ZTXJRyUlmRByiWIs8h-0ocLRj9XicDhEj_gA/exec";
+		let par = '?sku=' + sku;
+		par += '&ven=' + ven;
+		par += '&cost=' + cost;
+		par += '&price=' + price;
+		par += '&priceHF=' + priceHF;		
+
+        xmlhttp.open("get",url + par,true);
+		let msg = '是否要新建商品\n\n' + sku;
+		console.log(msg);
+		if(confirm(msg)) {xmlhttp.send();}
+	
+}
 /* --- 訂單登記作業 --- (e) */
 
 
