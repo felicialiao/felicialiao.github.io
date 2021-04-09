@@ -92,6 +92,7 @@ input[type="text"],
 }
 
 
+input[type="submit"],
 input[type="button"] {
     color: #6f6a66;
     font-size: 16px;
@@ -115,7 +116,7 @@ input[type="button"]:focus, input[type="button"]:hover {
 	outline: none;
 }
 
-
+input[type="submit"].TextButton,
 input[type="button"].TextButton {
 	color: #b8926a;
     font-size: 15px;
@@ -193,7 +194,8 @@ input[type="button"].TextButton {
 }
 
 #dialog_out input[type="button"],
-.textBody input[type="button"] {
+.textBody input[type="button"],
+.textBody input[type="submit"] {
 	display: inline-grid;
 	padding: 5px 20px;
 	font-weight: bold;
@@ -243,6 +245,7 @@ input[type="button"].TextButton {
 	margin: 15 60px !important;
 }
 
+input[type="submit"].Npass,
 input[type="button"].Npass {
 	width:120px;
 	margin: 15 5 15 50 !important;
@@ -345,6 +348,7 @@ input[type="checkbox"] {
 	width:100%;
 	display:inline-flex;
 	justify-content: center;
+	flex-direction: column;
 }
 
 .out_list {

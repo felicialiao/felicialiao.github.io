@@ -959,11 +959,13 @@ function work_TBOrder() { //進貨狀態更新
     var obj = document.getElementsByName('ordercheck');
     var selected=[];
 	var data = [];
+	var total = 0;
     for (var i=0; i<obj.length; i++) {
         if (obj[i].checked) 
 		{
 			selected = [];
-			selected[0] = obj[i].value ; //key
+			selected[0] = obj[i].value.split("|")[0]; //key
+			total += parseInt(obj[i].value.split("|")[1]); //money
 			data.push(selected);
         }
     }
@@ -977,21 +979,55 @@ function work_TBOrder() { //進貨狀態更新
           {
                   if (xmlhttp.readyState==4 && xmlhttp.status==200)      
                   {
-					  work_order();
 					  alert('訂貨完成');
+					  work_order();
 				  }
           }
     var url="https://script.google.com/macros/s/AKfycbw8M-42nbQK4R5cmt28-y003DChvXP212VxpFuS2P4vYocU2l9c/exec";
 		url += '?type=' + type;
 		url += '&key=' + data;
         xmlhttp.open("get",url,true);
-		let msg = '是否要訂貨\n\n' + data.join('\n');
+		let msg = '是否要訂貨\n\n' + data.join('\n') + "\n\n總訂貨金額 : $" + total;
 		console.log(msg);
 		if(confirm(msg)) {xmlhttp.send();}
 }
 
 /* --- 訂貨作業 --- (e) */
 
+
+/* --- 訂單登記作業 --- (s) */
+function keyin_order() {
+	document.getElementById("adminbody").innerHTML = '';
+	document.getElementById("adminbody").innerHTML = document.getElementById("keyin_order_list").innerHTML;
+}
+
+function keyin_order_write(plat,name,sku,color,qty) {
+	var xmlhttp;
+        
+	if (window.XMLHttpRequest) { xmlhttp=new XMLHttpRequest(); } // code for IE7+, Firefox, Chrome, Opera, Safari
+    else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); } // code for IE6, IE5
+    
+	xmlhttp.onreadystatechange=function()
+          {
+                  if (xmlhttp.readyState==4 && xmlhttp.status==200)      
+                  {
+					  alert('完成訂貨成立');
+				  }
+          }
+    var url="https://script.google.com/macros/s/AKfycbw3e409X1_Tfz23LEAk9uFL0NOBZ1jH9MUGaMqhtQbkAMWyvw_r/exec";
+		let par = '?plat=' + plat;
+		par += '&name=' + name;
+		par += '&sku=' + sku;
+		par += '&color=' + color;
+		par += '&qty=' + qty;		
+
+        xmlhttp.open("get",url + par,true);
+		let msg = '是否要建立訂單\n\n' + par;
+		console.log(msg);
+		if(confirm(msg)) {xmlhttp.send();}
+	
+}
+/* --- 訂單登記作業 --- (e) */
 
 
 /* --- Line Notify 測試 --- (s) */

@@ -167,11 +167,14 @@
 		<h2>管理員</h2>
 		
 		<menu style="display:flex; justify-content: center; padding-inline-end: 40px;">
-			<input type="button" id="read_out" value="查詢出貨申請" onclick="read_out()">
-			<input type="button" id="order_work" value="申請訂單出貨" onclick="work_orderout()">
 			<input type="button" id="" value="訂貨作業" onclick="work_order()">
 			<input type="button" id="" value="到貨作業" onclick="work_in()">
 			<input type="button" id="" value="出貨作業" onclick="work_out()">
+		</menu>
+		<menu style="display:flex; justify-content: center; padding-inline-end: 40px;">
+			<input type="button" id="read_out" value="查詢出貨申請" onclick="read_out()">
+			<input type="button" id="order_work" value="訂單查詢/出貨申請" onclick="work_orderout()">
+			<input type="button" id="" value="訂單登記作業" onclick="keyin_order()">
 		</menu>
 		<hr>
 		
@@ -182,7 +185,7 @@
 			<div>				
 				<span id="TBOrder_content"> </span>
 			</div>
-		</div>	
+		</div>	<!-- 訂貨作業 -->
 		
 		<div id="admin_order_list" class="bodyHide"> <!-- 訂單出貨申請 -->
 			<div>
@@ -197,7 +200,7 @@
 				<span id="admin_order"> </span>
 				<input type="button" value="我要出貨" onclick=' applyout("admin_order")'>
 			</div>
-		</div>  
+		</div>  <!-- 訂單出貨申請 -->
 		
 		<div id="work_in_list" class="bodyHide"> <!-- 到貨作業 -->
 			<div>
@@ -211,7 +214,7 @@
 				
 				<span id="in_content"> </span>
 			</div>
-		</div>	
+		</div>	<!-- 到貨作業 -->
 		
 		
 		<div id="write_out_list" class="bodyHide"> <!-- 出貨作業 -->
@@ -232,7 +235,43 @@
 			
 			<span id="out_work_content"> </span>
 			</div>
-		</div>  
+		</div>	<!-- 出貨作業 -->
+		
+		<div id="keyin_order_list" class="bodyHide"> <!-- 訂單登記作業 -->
+			<div>
+				<form class="out_list">
+					<label> 平台 : 
+					<select id='keyin_plat' style="width:100px;">
+					<option>快樂角</option>
+					<option>懂吃</option>
+					<option>成本</option>
+					<option>P發</option>
+					</select> </label>
+					<label> 訂貨人 : <input list="order_name_list" name='order_name' id='keyin_order_name' required></label>
+					<label> 商品 : <input id='keyin_sku' required> </label>
+					<label> 顏色尺寸 : <input id='keyin_color' style="width:120px;"> </label>
+					<label> 數量 : <input type="number" min="1" value='1' id='keyin_qty' style="width:60px;" required> </label>
+				
+					<div style="margin-block-start: auto;"><input type="submit" value="確認" onclick="keyin_order_write(keyin_plat.value,keyin_order_name.value,keyin_sku.value,keyin_color.value,keyin_qty.value)"></div>
+				</form>
+			</div>
+			
+			<div> <!-- 商品輸入作業 -->
+			<br><hr><br>
+				<form class="out_list">
+					<label> 商品 : <input id='keyin_sku'> </label>
+					<label> 廠商 : <input id='keyin_ven' list="in_ven_list"> </label>
+					<label> 成本 : <input id='keyin_cost' style="
+		width: 100px;"> </label>
+					<label> 懂吃售價 : <input id='keyin_price' style="
+		width: 100px;"> </label>
+					<label> 快樂角售價 : <input id='keyin_priceHF' style="
+		width: 100px;"> </label>
+					<div style="margin-block-start: auto;"><input type="submit" value="確認" onclick=""></div>
+				</form>
+			</div>	<!-- 商品輸入作業 -->
+		</div>	<!-- 訂單登記作業 -->
+		
 		<table>
 		</table>
 		</div>
