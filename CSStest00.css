@@ -269,7 +269,7 @@ input[type="checkbox"] {
     color:#3e3736;
 	margin: 20px;
 	border: 2px solid #455e8b !important;
-	background : #fbfbf9;
+	background : #FFFFFF;
 	min-width: 300px;
 }
 
@@ -318,7 +318,8 @@ input[type="checkbox"] {
 }
 
 .table_lv2 {
-	background-color:#F3F6FB;
+	background-color:#f8ebd8;
+	font-weight:bold;
 	border-block: 2px solid #455e8b !important;
 }
 
