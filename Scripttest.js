@@ -323,6 +323,7 @@ function deli_money() //計算運費
 	
 	let temp = document.getElementById("deliver").value;
 	if (total < 1500) { total0 = total + parseInt(temp); }
+	else {total0 = total;}
 	
 	let html = '<p class="p"> 結帳總金額 : $';
 	html += total0;
